@@ -5,6 +5,9 @@ import com.Intern_Project.Order_Management_System.model.Product;
 
 public interface ProductService {
 
+    //create Table
+    void createTable();
+
     // add a new Product.
     int addProduct(Product product);
 

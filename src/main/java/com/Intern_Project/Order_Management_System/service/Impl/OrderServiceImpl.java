@@ -15,6 +15,11 @@ public class OrderServiceImpl implements OrderService {
     OrderRepositoryImpl orderRepositoryImpl;
 
     @Override
+    public void createTable() {
+        orderRepositoryImpl.createTable();
+    }
+
+    @Override
     public int insertOrder(Order order) {
         return orderRepositoryImpl.insertOrder(order);
     }

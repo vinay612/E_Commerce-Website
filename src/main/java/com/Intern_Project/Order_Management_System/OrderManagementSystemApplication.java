@@ -2,6 +2,8 @@ package com.Intern_Project.Order_Management_System;
 
 import com.Intern_Project.Order_Management_System.service.AccountService;
 import com.Intern_Project.Order_Management_System.service.CartService;
+import com.Intern_Project.Order_Management_System.service.OrderService;
+import com.Intern_Project.Order_Management_System.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +16,12 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 	private AccountService accountService;
 	@Autowired
 	private CartService cartService;
+
+	@Autowired
+	private OrderService orderService;
+
+	@Autowired
+	private ProductService productService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagementSystemApplication.class, args);
@@ -36,5 +44,8 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 		*/
 		accountService.createTable();
 		cartService.createTable();
+		productService.createTable();
+		orderService.createTable();;
+
 	}
 }

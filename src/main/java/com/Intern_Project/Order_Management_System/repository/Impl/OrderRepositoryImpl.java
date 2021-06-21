@@ -29,7 +29,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     // Creating table Product
     public int createTable()
     {
-        String query="CREATE TABLE IF NOT EXISTS Orders(order_Id int PRIMARY KEY,user_Id int NOT NULL, product_Id int NOT NULL ,quantity int NOT NULL, purchase_Date varchar(12) ,purchase_Time varchar(12), total_Price double NOT NULL, FOREIGN KEY(product_Id) references Product(product_Id))";
+        String query="CREATE TABLE IF NOT EXISTS Orders(order_Id int PRIMARY KEY,user_Id int NOT NULL, product_Id int NOT NULL ,quantity int NOT NULL, purchase_Date varchar(12) ,purchase_Time varchar(12), total_Price double NOT NULL, FOREIGN KEY(product_Id) references Product(product_Id),FOREIGN KEY(user_Id) references Account(account_id))";
         int update=this.jdbcTemplate.update(query);
         return update;
     }

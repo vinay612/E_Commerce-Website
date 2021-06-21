@@ -5,6 +5,9 @@ import com.Intern_Project.Order_Management_System.model.Order;
 
 public interface OrderService {
 
+    // create Table
+    void createTable();
+
     // add a new Order.
     int insertOrder(Order order);
 
