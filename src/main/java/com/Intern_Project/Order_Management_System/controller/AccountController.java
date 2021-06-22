@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import java.util.List;
 
 @RestController
@@ -27,17 +28,18 @@ public class AccountController {
     }
 
     @GetMapping("/account/{id}")
-    Account getAccountById(@Valid @PathVariable(value="id") Integer id)  throws AccountNotFoundException {
+    Account getAccountById(@PathVariable(value="id") @Max(value = 100) Integer id)  throws AccountNotFoundException {
         return accountService.findById(id);
     }
 
     @PutMapping("/account")
-    Account putAccount(@Valid @RequestBody Account account){
-        return accountService.updateAccount(account);
+    Account putAccount(@Valid @RequestBody Account account) throws AccountNotFoundException{
+        account=accountService.findById(account.getAccountId());
+            return accountService.updateAccount(account);
     }
 
     @DeleteMapping("/account/{id}")
-    Account deleteAccount(@Valid @PathVariable Integer id){
+    Account deleteAccount(@PathVariable @Max(value=100) Integer id){
         accountService.deleteAccount(id);
         return null;
     }

@@ -62,12 +62,12 @@ public class AccountRepositoryImpl implements AccountRepository {
         return accounts;
     }
 
-    public Account findById(Integer id) throws AccountNotFoundException {
+    public Account findById(Integer id){
         paramMap.put("account_id",id);
         String query="Select * from Account where account_id = :account_id";
         Account account=this.namedTemplate.queryForObject(query,paramMap,new AccountRowMapper());
-        if(account == null)
-            throw new AccountNotFoundException("id");
+        System.out.println("Print Account");
+        System.out.println(account);
         return account;
     }
 
@@ -80,6 +80,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     public void deleteAccount(Integer id){
         paramMap.put("account_id",id);
+        Account account=findById(id);
         String query="Delete Account where account_id = :account_id";
         namedTemplate.update(query,paramMap);
     }

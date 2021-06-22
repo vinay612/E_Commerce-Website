@@ -1,24 +1,24 @@
 package com.Intern_Project.Order_Management_System.util.Error;
 
 public class ErrorMessage {
-    private Integer code;
+    private String field;
     private String message;
 
     public ErrorMessage(){
 
     }
 
-    public ErrorMessage(Integer code,String message){
-        this.code=code;
+    public ErrorMessage(String field,String message){
+        this.field=field;
         this.message=message;
     }
 
-    public Integer getCode() {
-        return code;
+    public String getField() {
+        return field;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setField(String field) {
+        this.field = field;
     }
 
     public String getMessage() {

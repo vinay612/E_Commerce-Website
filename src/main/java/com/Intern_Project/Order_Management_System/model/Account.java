@@ -1,11 +1,15 @@
 package com.Intern_Project.Order_Management_System.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import javax.validation.constraints.Size;
 
 public class Account {
 
     private int accountId;
+    @NotBlank(message="FirstName cannot be blank")
     private String firstName;
     private String lastName;
     @NotBlank(message = "user name cannot be blank")
@@ -14,8 +18,10 @@ public class Account {
     private String password;
     @NotBlank(message = "address cannot be blank")
     private String address;
+    @Email(message = "EmailId is not valid")
     private String emailId;
     @NotBlank(message = "phone number cannot be blank")
+    @Length(max = 10,min = 10)
     private String phoneNumber;
 
 
