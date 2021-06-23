@@ -29,7 +29,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     // Creating table Product
     public int createTable()
     {
-        String query="CREATE TABLE IF NOT EXISTS Orders(order_Id int PRIMARY KEY,user_Id int NOT NULL, product_Id int NOT NULL ,quantity int NOT NULL, purchase_Date varchar(12) ,purchase_Time varchar(12), total_Price double NOT NULL, FOREIGN KEY(product_Id) references Product(product_Id),FOREIGN KEY(user_Id) references Account(account_id))";
+        String query="CREATE TABLE IF NOT EXISTS Orders(order_Id int IDENTITY(100,1) PRIMARY KEY,user_Id int NOT NULL, product_Id int NOT NULL ,quantity int NOT NULL, purchase_Date varchar(12) ,purchase_Time varchar(12), total_Price double NOT NULL, FOREIGN KEY(product_Id) references Product(product_Id),FOREIGN KEY(user_Id) references Account(account_id))";
         int update=this.jdbcTemplate.update(query);
         return update;
     }
@@ -54,10 +54,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public int insertOrder(Order order) {
 
-        String query="INSERT INTO ORDERS(order_Id,user_Id,product_Id,quantity,purchase_Date,purchase_Time,total_Price) VALUES(:order_Id,:user_Id,:product_Id,:quantity,:purchase_Date,:purchase_Time,:total_Price)";
+        String query="INSERT INTO ORDERS(user_Id,product_Id,quantity,purchase_Date,purchase_Time,total_Price) VALUES(:user_Id,:product_Id,:quantity,:purchase_Date,:purchase_Time,:total_Price)";
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("order_Id",order.getOrderId())
-                .addValue("user_Id",order.getUserId())
+        mapSqlParameterSource.addValue("user_Id",order.getUserId())
                 .addValue("product_Id",order.getProductId())
                 .addValue("quantity",order.getQuantity())
                 .addValue("purchase_Date",order.getPurchaseDate())

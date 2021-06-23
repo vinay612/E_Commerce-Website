@@ -43,7 +43,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     public void createTable(){
 
-        String query="CREATE TABLE IF NOT EXISTS Account(account_id int primary key , first_name varchar(255), last_name  varchar(255) , user_name  varchar(255) , password    varchar(255) , address     varchar(255) , email_id    varchar(255) , phone_number varchar(255))";
+        String query="CREATE TABLE IF NOT EXISTS Account(account_id int IDENTITY primary key , first_name varchar(255), last_name  varchar(255) , user_name  varchar(255) , password    varchar(255) , address     varchar(255) , email_id    varchar(255) , phone_number varchar(255))";
         int count=this.jdbcTemplate.update(query);
         System.out.println("User table created "+count);
     }
@@ -51,7 +51,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     public Account createAccount(Account account){
         setParamMap(account);
         System.out.println("In Repository repo");
-        int q=this.namedTemplate.update("insert into account (account_id,first_name,last_name,user_name,password,address,email_id,phone_number) values (:account_id,:first_name,:last_name,:user_name,:password,:address,:email_id,:phone_number) ", paramMap);
+        int q=this.namedTemplate.update("insert into account (first_name,last_name,user_name,password,address,email_id,phone_number) values (:first_name,:last_name,:user_name,:password,:address,:email_id,:phone_number) ", paramMap);
         System.out.println("Command Executed  "+q);
         return account;
     }
