@@ -11,6 +11,8 @@ public interface OrderService {
     // add a new Order.
     int insertOrder(Order order);
 
+    void insertOrderFromCart(List<Order> orderList);
+
     // get all the Orders.
     List<Order> findAll();
 

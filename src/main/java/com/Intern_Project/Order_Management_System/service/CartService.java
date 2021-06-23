@@ -10,6 +10,6 @@ public interface CartService {
     Cart insertCart(Cart cart);
     List<Cart> findByAccountId(Integer id);
     void deleteById(Integer id);
-
+    void deleteAll(List<Cart> cartList);
     Cart updateCart(Cart cart);
 }
