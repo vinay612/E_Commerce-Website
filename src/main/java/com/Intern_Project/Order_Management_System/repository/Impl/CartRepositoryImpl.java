@@ -41,7 +41,7 @@ public class CartRepositoryImpl implements CartRepository {
 
     public void createTable(){
 
-        String query="CREATE TABLE IF NOT EXISTS Cart (id int primary key,account_id int,product_id int,quantity int,total_price double)";
+        String query="CREATE TABLE IF NOT EXISTS Cart (id int IDENTITY(100,1) primary key,account_id int,product_id int,quantity int,total_price double)";
         this.jdbcTemplate.update(query);
         System.out.println("Cart table created ");
     }
@@ -54,8 +54,9 @@ public class CartRepositoryImpl implements CartRepository {
                 .addValue("product_id",cart.getProductId())
                 .addValue("quantity",cart.getQuantity())
                 .addValue("total_price",cart.getTotalPrice());
-        String query="Insert into Cart (id,account_id,product_id,quantity,total_price) values (:id,:account_id,:product_id,:quantity,:total_price)";
+        String query="Insert into Cart (account_id,product_id,quantity,total_price) values (:account_id,:product_id,:quantity,:total_price)";
         int count=this.namedTemplate.update(query,sqlParameterSource);
+
         System.out.println("Row inserted in Cart Table "+count);
         return cart;
     }

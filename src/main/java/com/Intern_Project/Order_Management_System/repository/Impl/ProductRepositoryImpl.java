@@ -27,7 +27,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     // Creating table Product
     public int createTable()
     {
-        String query="CREATE TABLE IF NOT EXISTS Product(product_Id int NOT NULL PRIMARY KEY,name varchar(30) NOT NULL , price double NOT NULL, description varchar(50),expiry_Date varchar(12) , min_Quantity int)";
+        String query="CREATE TABLE IF NOT EXISTS Product(product_Id int IDENTITY(1000,1) NOT NULL PRIMARY KEY,name varchar(30) NOT NULL , price double NOT NULL, description varchar(50),expiry_Date varchar(12) , min_Quantity int)";
         int update=this.jdbcTemplate.update(query);
         return update;
     }
@@ -36,12 +36,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public int addProduct(Product product) {
 
-        String query="INSERT INTO PRODUCT(PRODUCT_ID,NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (:product_Id,:name,:price,:description,:expiry_Date,:min_Quantity)";
+        String query="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (:name,:price,:description,:expiry_Date,:min_Quantity)";
         //String query="INSERT INTO PRODUCT(product_Id,name,price,description,expiry_Date,min_Quantity) VALUES (:product_Id,:name,:price,:description,:expiry_Date,:min_Quantity)";
         System.out.println(product.getProductId()+" "+product.getExpiryDate()+" "+product.getMinQuantity());
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("product_Id",product.getProductId())
-                .addValue("name",product.getName())
+        mapSqlParameterSource.addValue("name",product.getName())
                 .addValue("price",product.getPrice())
                 .addValue("description",product.getDescription())
                 .addValue("expiry_Date",product.getExpiryDate())
