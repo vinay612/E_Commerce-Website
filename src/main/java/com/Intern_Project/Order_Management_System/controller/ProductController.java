@@ -7,7 +7,7 @@ import com.Intern_Project.Order_Management_System.service.ProductService;
 
 import java.util.List;
 
-
+@RestController
 public class ProductController {
 
     @Autowired
