@@ -38,6 +38,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         String query="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (:name,:price,:description,:expiry_Date,:min_Quantity)";
         //String query="INSERT INTO PRODUCT(product_Id,name,price,description,expiry_Date,min_Quantity) VALUES (:product_Id,:name,:price,:description,:expiry_Date,:min_Quantity)";
+        System.out.println("Product added");
         System.out.println(product.getProductId()+" "+product.getExpiryDate()+" "+product.getMinQuantity());
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("name",product.getName())
