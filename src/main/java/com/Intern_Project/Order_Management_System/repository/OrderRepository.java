@@ -2,6 +2,7 @@ package com.Intern_Project.Order_Management_System.repository;
 
 import java.util.List;
 import com.Intern_Project.Order_Management_System.model.Order;
+import com.Intern_Project.Order_Management_System.model.OrderItem;
 
 public interface OrderRepository {
     //get list of all the orders.
@@ -16,7 +17,10 @@ public interface OrderRepository {
     int insertOrder(Order order);
 
     //get order by order id
-    Order findOrderById(int id);
+    List<OrderItem> findOrderById(int id);
 
     void insertOrderFromCart(List<Order> orderList);
+
+    //delete Order
+    int deleteOrder(int id);
 }

@@ -5,6 +5,9 @@ import com.Intern_Project.Order_Management_System.model.Product;
 
 public interface ProductRepository {
 
+    //create Table
+    int createTable();
+
     // get list of all the products present.
     List<Product> getAllproducts();
 
@@ -19,5 +22,8 @@ public interface ProductRepository {
 
     // post
     int addProduct(Product product);
+
+    //batch insert
+    int[] insertBatch(List<Product> products);
 
 }

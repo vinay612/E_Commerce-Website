@@ -2,6 +2,7 @@ package com.Intern_Project.Order_Management_System.service;
 
 import java.util.List;
 import com.Intern_Project.Order_Management_System.model.Order;
+import com.Intern_Project.Order_Management_System.model.OrderItem;
 
 public interface OrderService {
 
@@ -17,8 +18,11 @@ public interface OrderService {
     List<Order> findAll();
 
     // get details of a particular order by id.
-    Order findOrderById(int id);
+    List<OrderItem> findOrderById(int id);
 
     // get details of all orders of a particular user.
     List<Order> findOrderDetailsByUserId(int id);
+
+    //delete a order
+    int deleteOrder(int id);
 }

@@ -16,6 +16,7 @@ public class ProductController {
     @PostMapping("/product")
     int  addProduct(@RequestBody Product product)
     {
+        System.out.println("Product Post Controller");
         return productService.addProduct(product);
     }
 
@@ -35,5 +36,11 @@ public class ProductController {
     Product getProductByName(@PathVariable("name") String name)
     {
         return productService.getProductByName(name);
+    }
+
+    @PostMapping("/products")
+    int[] insertProducts(@RequestBody List<Product> products){
+        System.out.println("In Product Batch Post Controller");
+        return productService.insertBatch(products);
     }
 }
