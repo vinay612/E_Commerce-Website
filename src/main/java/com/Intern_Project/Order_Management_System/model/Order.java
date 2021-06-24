@@ -4,8 +4,8 @@ public class Order {
 
     private int orderId;
     private int userId;
-    private int productId;
-    private int quantity;
+    //private int productId;
+    //private int quantity;
     private String purchaseDate;
     private String purchaseTime;
     private double totalPrice;
@@ -13,11 +13,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, int userId, int productId, int quantity, String purchaseDate, String purchaseTime, double totalPrice) {
+    public Order(int orderId, int userId,String purchaseDate, String purchaseTime, double totalPrice) {
         this.orderId=orderId;
         this.userId = userId;
-        this.productId = productId;
-        this.quantity = quantity;
+        //this.productId = productId;
+        //this.quantity = quantity;
         this.purchaseDate = purchaseDate;
         this.purchaseTime = purchaseTime;
         this.totalPrice = totalPrice;
@@ -38,7 +38,7 @@ public class Order {
         this.userId = userId;
     }
 
-    public int getProductId() {
+    /*public int getProductId() {
         return productId;
     }
 
@@ -52,7 +52,7 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
+    }*/
 
     public String getPurchaseDate() {
         return purchaseDate;

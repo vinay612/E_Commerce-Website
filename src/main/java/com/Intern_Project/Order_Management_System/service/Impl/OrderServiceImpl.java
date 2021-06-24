@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.service.Impl;
 
+import com.Intern_Project.Order_Management_System.model.OrderItem;
 import com.Intern_Project.Order_Management_System.repository.OrderRepository;
 import com.Intern_Project.Order_Management_System.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOrderById(int id) {
+    public List<OrderItem> findOrderById(int id) {
         return orderRepository.findOrderById(id);
     }
 
     @Override
     public List<Order> findOrderDetailsByUserId(int id) {
         return orderRepository.findOrderDetailsByUserId(id);
+    }
+
+    @Override
+    public int deleteOrder(int id) {
+        return orderRepository.deleteOrder(id);
     }
 }

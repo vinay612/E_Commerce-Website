@@ -19,4 +19,9 @@ public interface ProductService {
 
     //get details of a particular product by name.
     Product getProductByName(String name);
+
+    //batch insert
+    int[] insertBatch(List<Product> products);
+
+
 }

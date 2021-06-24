@@ -3,7 +3,7 @@ package com.Intern_Project.Order_Management_System.service.Impl;
 import com.Intern_Project.Order_Management_System.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.Intern_Project.Order_Management_System.model.Product;
-import com.Intern_Project.Order_Management_System.repository.Impl.ProductRepositoryImpl;
+import com.Intern_Project.Order_Management_System.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,30 +12,36 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepositoryImpl productRepositoryImpl;
+    ProductRepository productRepository;
 
     @Override
     public void createTable() {
-        productRepositoryImpl.createTable();
+        productRepository.createTable();
     }
 
     @Override
     public int  addProduct(Product product) {
-        return productRepositoryImpl.addProduct(product);
+        return productRepository.addProduct(product);
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepositoryImpl.getAllproducts();
+        return productRepository.getAllproducts();
     }
 
     @Override
     public Product getProductById(int id) {
-        return productRepositoryImpl.getProductById(id);
+        return productRepository.getProductById(id);
     }
 
     @Override
     public Product getProductByName(String name) {
-        return productRepositoryImpl.getProductByName(name);
+        return productRepository.getProductByName(name);
     }
+
+    @Override
+    public int[] insertBatch(List<Product> products) {
+        return productRepository.insertBatch(products);
+    }
+
 }

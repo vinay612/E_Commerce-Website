@@ -2,6 +2,7 @@ package com.Intern_Project.Order_Management_System.repository.Impl;
 
 import com.Intern_Project.Order_Management_System.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.Intern_Project.Order_Management_System.model.Product;
 import com.Intern_Project.Order_Management_System.util.RowMapper.ProductRowMapper;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -25,6 +28,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     }
     // Creating table Product
+    @Override
     public int createTable()
     {
         String query="CREATE TABLE IF NOT EXISTS Product(product_Id int IDENTITY(1000,1) NOT NULL PRIMARY KEY,name varchar(30) NOT NULL , price double NOT NULL, description varchar(50),expiry_Date varchar(12) , min_Quantity int)";
@@ -75,6 +79,29 @@ public class ProductRepositoryImpl implements ProductRepository {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("name",name);
         String query="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
         return namedParameterJdbcTemplate.queryForObject(query,sqlParameterSource,new ProductRowMapper());
+    }
+
+    public int[] insertBatch(List<Product> products){
+
+        System.out.println("In Batch Insert Method");
+        String query="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (?,?,?,?,?)";
+        return jdbcTemplate.batchUpdate(query, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                Product product=products.get(i);
+                preparedStatement.setString(1,product.getName());
+                preparedStatement.setDouble(2,product.getPrice());
+                preparedStatement.setString(3,product.getDescription());
+                preparedStatement.setString(4,product.getExpiryDate());
+                preparedStatement.setInt(5,product.getMinQuantity());
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return products.size();
+            }
+        });
     }
 
 

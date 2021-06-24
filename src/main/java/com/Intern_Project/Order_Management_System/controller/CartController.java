@@ -51,8 +51,8 @@ public class CartController {
             Order order=new Order();
             order.setOrderId(cart.getId());
             order.setUserId((int) cart.getAccountId());
-            order.setProductId(cart.getProductId());
-            order.setQuantity(cart.getQuantity());
+            //order.setProductId(cart.getProductId());
+            //order.setQuantity(cart.getQuantity());
             order.setTotalPrice(cart.getTotalPrice());
             order.setPurchaseDate(LocalDate.now().toString());
             order.setPurchaseTime(LocalTime.now().toString());
