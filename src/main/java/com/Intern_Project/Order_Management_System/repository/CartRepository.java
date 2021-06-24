@@ -11,4 +11,5 @@ public interface CartRepository {
     void deleteById(Integer id);
 
     Cart updateCart(Cart cart);
+    void deleteAll(List<Cart> cartList);
 }

@@ -5,6 +5,8 @@ import com.Intern_Project.Order_Management_System.model.Order;
 
 public interface OrderRepository {
     //get list of all the orders.
+    int createTable();
+
     List<Order> findAll();
 
     //get Order details of a particular user.
@@ -15,4 +17,6 @@ public interface OrderRepository {
 
     //get order by order id
     Order findOrderById(int id);
+
+    void insertOrderFromCart(List<Order> orderList);
 }

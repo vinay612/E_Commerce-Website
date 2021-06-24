@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.service.Impl;
 
+import com.Intern_Project.Order_Management_System.repository.OrderRepository;
 import com.Intern_Project.Order_Management_System.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,30 +13,34 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    OrderRepositoryImpl orderRepositoryImpl;
+    OrderRepository orderRepository;
 
     @Override
     public void createTable() {
-        orderRepositoryImpl.createTable();
+        orderRepository.createTable();
     }
 
     @Override
     public int insertOrder(Order order) {
-        return orderRepositoryImpl.insertOrder(order);
+        return orderRepository.insertOrder(order);
+    }
+
+    public void insertOrderFromCart(List<Order> orderList){
+        orderRepository.insertOrderFromCart(orderList);
     }
 
     @Override
     public List<Order> findAll() {
-        return orderRepositoryImpl.findAll();
+        return orderRepository.findAll();
     }
 
     @Override
     public Order findOrderById(int id) {
-        return orderRepositoryImpl.findOrderById(id);
+        return orderRepository.findOrderById(id);
     }
 
     @Override
     public List<Order> findOrderDetailsByUserId(int id) {
-        return orderRepositoryImpl.findOrderDetailsByUserId(id);
+        return orderRepository.findOrderDetailsByUserId(id);
     }
 }

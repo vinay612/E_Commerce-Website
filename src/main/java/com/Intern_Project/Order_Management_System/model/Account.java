@@ -2,9 +2,7 @@ package com.Intern_Project.Order_Management_System.model;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class Account {
 
@@ -20,8 +18,10 @@ public class Account {
     private String address;
     @Email(message = "EmailId is not valid")
     private String emailId;
-    @NotBlank(message = "phone number cannot be blank")
-    @Length(max = 10,min = 10)
+    //@NotBlank(message = "phone number cannot be blank")
+    //@Length(max = 10,min = 10)
+    @NotNull(message = "Phone Number must be only numeric with 10 digits")
+    @Pattern(regexp = "^[0-9]{10}$",message = "Phone Number must be only numeric with 10 digits")
     private String phoneNumber;
 
 

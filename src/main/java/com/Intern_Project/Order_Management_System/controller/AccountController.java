@@ -1,7 +1,9 @@
 package com.Intern_Project.Order_Management_System.controller;
 
+import com.Intern_Project.Order_Management_System.exception.AccountExistsException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.service.AccountService;
+import com.Intern_Project.Order_Management_System.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +18,31 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/account")
-    Account postAccount(@Valid @RequestBody Account account){
+    @PostMapping("/account/register")
+    Status postAccount(@Valid @RequestBody Account account) throws AccountExistsException {
         System.out.println("In Controller repo");
-        return accountService.createAccount(account);
+        List<Account> accounts=accountService.findAll();
+        accounts.forEach(user ->{
+            if(user.getEmailId().equalsIgnoreCase(account.getEmailId()))
+                throw new AccountExistsException("Account with the given email Id already Exists");
+            else if(user.getPhoneNumber().equals(account.getPhoneNumber()))
+                throw new AccountExistsException("Account with the given phone number already Exists");
+            else if(user.getUserName().equalsIgnoreCase(account.getUserName()))
+                throw new AccountExistsException("Account with this user name already Exists");
+        });
+        accountService.createAccount(account);
+        return Status.SUCCESS;
     }
 
+    @PostMapping("/account/login")
+    Status logIn(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
+        List<Account> accounts=accountService.findAll();
+        for(Account account : accounts){
+            if(account.getUserName().equalsIgnoreCase(userName) && account.getPassword().equals(password))
+                return Status.SUCCESS;
+        }
+        throw new AccountNotFoundException("User Name OR Password is/are incorrect");
+    }
     @GetMapping("/account")
     List<Account> getAllAccount(){
         return accountService.findAll();
@@ -39,8 +60,8 @@ public class AccountController {
     }
 
     @DeleteMapping("/account/{id}")
-    Account deleteAccount(@PathVariable @Max(value=100) Integer id){
+    Status deleteAccount(@PathVariable @Max(value=100) Integer id){
         accountService.deleteAccount(id);
-        return null;
+        return Status.SUCCESS;
     }
 }

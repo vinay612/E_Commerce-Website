@@ -34,4 +34,8 @@ public class CartServiceImpl implements CartService {
     public void deleteById(Integer id){
         cartRepository.deleteById(id);
     }
+
+    public void deleteAll(List<Cart> cartList){
+        cartRepository.deleteAll(cartList);
+    }
 }
