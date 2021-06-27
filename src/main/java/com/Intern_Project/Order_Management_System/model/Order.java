@@ -1,5 +1,10 @@
 package com.Intern_Project.Order_Management_System.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class Order {
 
     private int orderId;
@@ -10,7 +15,7 @@ public class Order {
     private String purchaseTime;
     private double totalPrice;
 
-    public Order() {
+    /*public Order() {
     }
 
     public Order(int orderId, int userId,String purchaseDate, String purchaseTime, double totalPrice) {
@@ -38,7 +43,7 @@ public class Order {
         this.userId = userId;
     }
 
-    /*public int getProductId() {
+    public int getProductId() {
         return productId;
     }
 
@@ -52,7 +57,7 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }*/
+    }
 
     public String getPurchaseDate() {
         return purchaseDate;
@@ -76,5 +81,5 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
+    }*/
 }

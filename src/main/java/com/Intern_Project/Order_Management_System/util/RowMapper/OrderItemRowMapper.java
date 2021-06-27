@@ -6,7 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OrderItemRowMapper implements RowMapper<OrderItem> {
+public enum OrderItemRowMapper implements RowMapper<OrderItem> {
+
+    INSTANCE;
 
     @Override
     public OrderItem mapRow(ResultSet resultSet, int i) throws SQLException {

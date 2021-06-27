@@ -3,14 +3,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+@Data
+@RequiredArgsConstructor
 public class Account {
 
     private int accountId;
@@ -25,8 +22,6 @@ public class Account {
     private String address;
     @Email(message = "EmailId is not valid")
     private String emailId;
-    //@NotBlank(message = "phone number cannot be blank")
-    //@Length(max = 10,min = 10)
     @NotNull(message = "Phone Number must be only numeric with 10 digits")
     @Pattern(regexp = "^[0-9]{10}$",message = "Phone Number must be only numeric with 10 digits")
     private String phoneNumber;

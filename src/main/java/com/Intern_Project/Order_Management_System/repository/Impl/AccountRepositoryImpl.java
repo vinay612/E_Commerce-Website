@@ -5,6 +5,7 @@ import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.util.RowMapper.AccountRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@NoArgsConstructor
 @Repository("accountRepository")
 public class AccountRepositoryImpl implements AccountRepository {
 
@@ -34,8 +36,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     private static final String SELECT_BY_ID="Select * from Account where account_id = :account_id";
     private static final String UPDATE_ACCOUNT="Update Account set first_name= :first_name , last_name = :last_name , user_name = :user_name ,password = :password , address = :address ,email_id = :email_id ,phone_number = :phone_number where account_id = :account_id ";
     private static final String DELETE_ACCOUNT="Delete Account where account_id = :account_id";
-    public AccountRepositoryImpl(){
-    }
+
 
     public void createTable(){
 
@@ -43,24 +44,26 @@ public class AccountRepositoryImpl implements AccountRepository {
         log.info("User table created {}",count);
     }
 
-    public void insertAccount(Account account){
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue("first_name",account.getFirstName())
-                .addValue("last_name",account.getLastName())
-                .addValue("user_name",account.getUserName())
-                .addValue("password",account.getPassword())
-                .addValue("address",account.getAddress())
-                .addValue("email_id",account.getEmailId())
-                .addValue("phone_number",account.getPhoneNumber());
-        log.info("In Repository repo {}",account.getAccountId());
-        int q=this.namedParameterJdbcTemplate.update(INSERT_ACCOUNT, sqlParameterSource);
+    public void insertAccount(Account account) {
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("first_name", account.getFirstName())
+                .addValue("last_name", account.getLastName())
+                .addValue("user_name", account.getUserName())
+                .addValue("password", account.getPassword())
+                .addValue("address", account.getAddress())
+                .addValue("email_id", account.getEmailId())
+                .addValue("phone_number", account.getPhoneNumber());
+        log.info("In Repository repo {}", account.getAccountId());
+        int q = this.namedParameterJdbcTemplate.update(INSERT_ACCOUNT, sqlParameterSource);
         log.info("A new Account has been created");
-        return ;
+        return;
     }
+
+
 
     public List<Account> findAllAccounts(){
         List<Account> accounts=new ArrayList<>();
-        accounts=this.namedParameterJdbcTemplate.query(SELECT_ALL,new AccountRowMapper());
+        accounts=this.namedParameterJdbcTemplate.query(SELECT_ALL,AccountRowMapper.INSTANCE);
         return accounts;
     }
 
@@ -69,7 +72,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue("account_id",id);
 
-        Account account=this.namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID,sqlParameterSource,new AccountRowMapper());
+        Account account=this.namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID,sqlParameterSource,AccountRowMapper.INSTANCE);
         log.info("Account with Account Id {} has been found",id);
         return account;
     }
@@ -86,7 +89,12 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .addValue("account_id",id);
         Account account=findByAccountId(id);
         this.namedParameterJdbcTemplate.update(DELETE_ACCOUNT,sqlParameterSource);
+        return;
     }
+
+
+
+
 
 
 }
