@@ -30,18 +30,6 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-/*
-		Account account=new Account();
-		account.setAccountId(1);
-		account.setAddress("1");
-		account.setEmailId("qw");
-		account.setFirstName("qwqq");
-		account.setLastName("yui");
-		account.setPassword("123");
-		account.setPhoneNumber("12345");
-		account.setUserName("90");
-		System.out.println(this.accountRepositoryImpl.createAccount(account));
-		*/
 		accountService.createTable();
 		cartService.createTable();
 		productService.createTable();

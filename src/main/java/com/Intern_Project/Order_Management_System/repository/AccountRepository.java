@@ -6,10 +6,12 @@ import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 public interface AccountRepository {
+
     void createTable();
     void insertAccount(Account account);
     List<Account> findAllAccounts();
     Account findByAccountId(Integer id) throws AccountNotFoundException;
     void updateAccount(Account account);
     void deleteAccountById(Integer id);
+
 }

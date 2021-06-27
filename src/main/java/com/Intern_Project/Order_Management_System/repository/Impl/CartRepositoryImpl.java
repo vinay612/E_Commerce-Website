@@ -1,6 +1,7 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
 import com.Intern_Project.Order_Management_System.model.Cart;
+import com.Intern_Project.Order_Management_System.service.ProductService;
 import com.Intern_Project.Order_Management_System.util.RowMapper.CartRowMapper;
 import com.Intern_Project.Order_Management_System.repository.CartRepository;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class CartRepositoryImpl implements CartRepository {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Autowired
+    private ProductService productService;
+
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
 
@@ -34,7 +38,7 @@ public class CartRepositoryImpl implements CartRepository {
     private static final String CREATE_TABLE="CREATE TABLE IF NOT EXISTS Cart (id int IDENTITY(100,1) primary key,account_id int,product_id int,quantity int,total_price double)";
     private static final String INSERT_CART="Insert into Cart (account_id,product_id,quantity,total_price) values (:account_id,:product_id,:quantity,:total_price)";
     private static final String SELECT_BY_ACCOUNT_ID="Select * from Cart where account_id=:id";
-    private static final String UPDATE_CART="Update Cart set quantity=:quantity where id=:id";
+    private static final String UPDATE_CART="Update Cart set quantity=:quantity , total_price= :total_price where id=:id";
     private static final String DELETE_CART_BY_ID="Delete from Cart where id=:id";
     public void createTable(){
         this.jdbcTemplate.update(CREATE_TABLE);
@@ -45,11 +49,12 @@ public class CartRepositoryImpl implements CartRepository {
 
     public void insertCart(Cart cart){
 
+        double price = productService.getProductById(cart.getProductId()).getPrice();
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue("account_id",cart.getAccountId())
                 .addValue("product_id",cart.getProductId())
                 .addValue("quantity",cart.getQuantity())
-                .addValue("total_price",cart.getTotalPrice());
+                .addValue("total_price",cart.getQuantity()*price);
 
         int count=this.namedParameterJdbcTemplate.update(INSERT_CART,sqlParameterSource);
 
@@ -66,12 +71,12 @@ public class CartRepositoryImpl implements CartRepository {
     }
 
     public void updateCartById(@NotNull Cart cart){
+
+        double price = productService.getProductById(cart.getProductId()).getPrice();
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue("id",cart.getId())
-                .addValue("account_id",cart.getAccountId())
-                .addValue("product_id",cart.getProductId())
                 .addValue("quantity",cart.getQuantity())
-                .addValue("total_price",cart.getTotalPrice());
+                .addValue("total_price",price*cart.getQuantity());
 
         this.namedParameterJdbcTemplate.update(UPDATE_CART,sqlParameterSource);
         log.info("Cart with id : {} has been updated",cart.getId());

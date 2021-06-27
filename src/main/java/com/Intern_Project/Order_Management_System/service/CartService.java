@@ -6,12 +6,19 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CartService {
+
     void createTable();
 
     void insertCart(Cart cart);
+
     ResponseEntity<String> cartCheckout(Integer id);
+
     List<Cart> findByAccountId(Integer id);
+
     void deleteByCartId(Integer id);
-    void deleteByAccountId(List<Cart> cartList);
+
+    void deleteByAccountId(Integer id);
+
     void updateCart(Cart cart);
+
 }

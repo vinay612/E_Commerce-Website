@@ -15,4 +15,5 @@ public interface AccountService {
     void updateAccount(Account account) throws AccountNotFoundException;
     void deleteAccount(Integer id);
     ResponseEntity<String> authenticationValidation(String userName, String password) throws AccountNotFoundException;
+
 }

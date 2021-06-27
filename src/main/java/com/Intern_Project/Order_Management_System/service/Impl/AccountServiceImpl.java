@@ -4,6 +4,8 @@ import com.Intern_Project.Order_Management_System.exception.AccountExistsExcepti
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +20,13 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     public void createTable(){
         accountRepository.createTable();
     }
 
     public void createAccount(Account account)  throws AccountExistsException {
 
-        System.out.println("In Controller repo");
         List<Account> accounts=accountRepository.findAllAccounts();
         accounts.forEach(user ->{
             if(user.getEmailId().equalsIgnoreCase(account.getEmailId()))
@@ -34,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
             else if(user.getUserName().equalsIgnoreCase(account.getUserName()))
                 throw new AccountExistsException("Account with this user name already Exists");
         });
-        System.out.println("In Service repo");
+        log.info("A new Account with Account Id {} has been inserted",account.getAccountId());
         accountRepository.insertAccount(account);
         return;
     }
@@ -57,8 +59,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public void updateAccount(Account account) throws AccountNotFoundException {
-        account=accountRepository.findByAccountId(account.getAccountId());
+        Account CheckAccount=accountRepository.findByAccountId(account.getAccountId());
         accountRepository.updateAccount(account);
+        log.info("Account with Account Id {} has been updated",account.getAccountId());
         return;
     }
 

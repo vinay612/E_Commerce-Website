@@ -19,6 +19,7 @@ public class CartController {
 
     private static final String url_cart_checkout="/{id}/checkout";
     private static final String url_id="{id}";
+    private static final String url_account_id="/account/{id}";
 
     @GetMapping(value = url_id)
     List<Cart> getCartByAccountId(@PathVariable Integer id){
@@ -38,9 +39,15 @@ public class CartController {
     }
 
     @DeleteMapping(value = url_id)
-    ResponseEntity<String> deleteById(@PathVariable(value="id") Integer id){
+    ResponseEntity<String> deleteCartById(@PathVariable(value="id") Integer id){
         cartService.deleteByCartId(id);
         return new ResponseEntity("Cart with cart id "+id+" has been deleted",HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping(value = url_account_id)
+    ResponseEntity<String> emptyCart( @PathVariable Integer id){
+        cartService.deleteByAccountId(id);
+        return new ResponseEntity("Cart of Account with Id "+id+" has been emptied", HttpStatus.ACCEPTED);
     }
 
     @PostMapping(value = url_cart_checkout)

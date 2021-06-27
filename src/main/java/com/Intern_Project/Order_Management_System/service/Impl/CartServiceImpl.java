@@ -52,8 +52,11 @@ public class CartServiceImpl implements CartService {
         cartRepository.deleteCartByCartId(id);
     }
 
-    public void deleteByAccountId(List<Cart> cartList){
+    public void deleteByAccountId(Integer id){
+        List<Cart> cartList=cartRepository.findCartByAccountId(id);
         cartRepository.deleteCartByAccountId(cartList);
+        return;
+
     }
 
     public ResponseEntity<String> cartCheckout(Integer id){
@@ -67,16 +70,10 @@ public class CartServiceImpl implements CartService {
             totalPrice+=cart.getTotalPrice();
         }
         accountId=carts.get(0).getAccountId();
-        Order order=new Order();
-        order.setUserId(accountId);
-        order.setPurchaseDate(LocalDate.now().toString());
-        order.setPurchaseTime(LocalTime.now().toString());
-        order.setTotalPrice(totalPrice);
+        Order order=new Order(0,accountId,LocalDate.now().toString(),LocalTime.now().toString(),totalPrice);
         orderService.insertOrder(order);
 
         final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
-
-        System.out.println("order id "+orderId);
 
         carts.forEach(cart -> {
             OrderItem orderItem=new OrderItem();
