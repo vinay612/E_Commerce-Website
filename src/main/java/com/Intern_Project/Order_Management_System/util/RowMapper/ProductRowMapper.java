@@ -5,7 +5,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductRowMapper implements RowMapper<Product> {
+public enum ProductRowMapper implements RowMapper<Product> {
+
+    INSTANCE;
 
     public Product mapRow(ResultSet rs , int row) throws SQLException {
 

@@ -19,23 +19,25 @@ public class CartServiceImpl implements CartService {
         cartRepository.createTable();
     }
     @Override
-    public Cart insertCart(Cart cart){
-        return cartRepository.insertCart(cart);
+    public void insertCart(Cart cart){
+         cartRepository.insertCart(cart);
+         return;
     }
 
     public List<Cart> findByAccountId(Integer id){
-        return cartRepository.findByAccountId(id);
+        return cartRepository.findCartByAccountId(id);
     }
 
-    public Cart updateCart(Cart cart){
-        return cartRepository.updateCart(cart);
+    public void updateCart(Cart cart){
+         cartRepository.updateCartById(cart);
+         return;
     }
 
-    public void deleteById(Integer id){
-        cartRepository.deleteById(id);
+    public void deleteByAccountId(Integer id){
+        cartRepository.deleteCartByCartId(id);
     }
 
-    public void deleteAll(List<Cart> cartList){
-        cartRepository.deleteAll(cartList);
+    public void deleteAccountCart(List<Cart> cartList){
+        cartRepository.deleteCartByAccountId(cartList);
     }
 }

@@ -1,5 +1,10 @@
 package com.Intern_Project.Order_Management_System.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class Product {
     private int productId;
     private String name;
@@ -8,7 +13,7 @@ public class Product {
     private String expiryDate;
     private int minQuantity;
 
-    public Product() {
+    /*public Product() {
     }
 
     public Product(int productId, String name, double price, String description, String expiryDate, int minQuantity) {
@@ -66,5 +71,5 @@ public class Product {
 
     public void setMinQuantity(int minQuantity) {
         this.minQuantity = minQuantity;
-    }
+    }*/
 }

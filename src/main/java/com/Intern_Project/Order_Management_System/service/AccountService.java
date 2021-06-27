@@ -8,9 +8,9 @@ import java.util.List;
 public interface AccountService {
 
     void createTable();
-    Account createAccount(Account account);
-    List<Account> findAll();
+    void createAccount(Account account);
+    List<Account> findAllAccounts();
     Account findById(Integer id) throws AccountNotFoundException;
-    Account updateAccount(Account account);
+    void updateAccount(Account account);
     void deleteAccount(Integer id);
 }

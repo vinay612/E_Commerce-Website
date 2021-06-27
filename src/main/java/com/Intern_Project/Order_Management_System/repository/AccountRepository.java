@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface AccountRepository {
     void createTable();
-    Account createAccount(Account account);
-    List<Account> findAll();
-    Account findById(Integer id) throws AccountNotFoundException;
-    Account updateAccount(Account account);
-    void deleteAccount(Integer id);
+    void insertAccount(Account account);
+    List<Account> findAllAccounts();
+    Account findByAccountId(Integer id) throws AccountNotFoundException;
+    void updateAccount(Account account);
+    void deleteAccountById(Integer id);
 }

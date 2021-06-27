@@ -5,7 +5,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CartRowMapper implements RowMapper<Cart> {
+public enum CartRowMapper implements RowMapper<Cart> {
+
+    INSTANCE;
 
     @Override
     public Cart mapRow(ResultSet resultSet, int i) throws SQLException {

@@ -7,9 +7,9 @@ import java.util.List;
 public interface CartService {
     void createTable();
 
-    Cart insertCart(Cart cart);
+    void insertCart(Cart cart);
     List<Cart> findByAccountId(Integer id);
-    void deleteById(Integer id);
-    void deleteAll(List<Cart> cartList);
-    Cart updateCart(Cart cart);
+    void deleteByAccountId(Integer id);
+    void deleteAccountCart(List<Cart> cartList);
+    void updateCart(Cart cart);
 }
