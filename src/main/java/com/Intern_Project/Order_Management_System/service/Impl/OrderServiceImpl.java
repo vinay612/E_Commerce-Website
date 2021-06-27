@@ -26,8 +26,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.insertOrder(order);
     }
 
-    public void insertOrderFromCart(List<Order> orderList){
-        orderRepository.insertOrderFromCart(orderList);
+    public Order findMaxOrderIdForAccountId(Integer id){
+        return orderRepository.findMaximumOrderIdForAccountId(id);
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.Intern_Project.Order_Management_System.controller;
 
-import com.Intern_Project.Order_Management_System.exception.AccountExistsException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.service.AccountService;
-import com.Intern_Project.Order_Management_System.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import java.util.List;
 
 @RestController
@@ -21,50 +18,38 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/register")
-    ResponseEntity<String> postAccount(@Valid @RequestBody Account account) throws AccountExistsException {
-        System.out.println("In Controller repo");
-        List<Account> accounts=accountService.findAllAccounts();
-        accounts.forEach(user ->{
-            if(user.getEmailId().equalsIgnoreCase(account.getEmailId()))
-                throw new AccountExistsException("Account with the given email Id already Exists");
-            else if(user.getPhoneNumber().equals(account.getPhoneNumber()))
-                throw new AccountExistsException("Account with the given phone number already Exists");
-            else if(user.getUserName().equalsIgnoreCase(account.getUserName()))
-                throw new AccountExistsException("Account with this user name already Exists");
-        });
+    private static final String url_register="/register";
+    private static final String url_login="/login";
+    private static final String url_id="{id}";
+
+    @PostMapping(value=url_register)
+    ResponseEntity<String> postAccount(@Valid @RequestBody Account account){
         accountService.createAccount(account);
         return new ResponseEntity("New Account has been Successfully Created",HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/login")
-    ResponseEntity<String> logIn(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
-        List<Account> accounts=accountService.findAllAccounts();
-        for(Account account : accounts){
-            if(account.getUserName().equalsIgnoreCase(userName) && account.getPassword().equals(password))
-                return new ResponseEntity("Account Credentials has been Authenticated.Log in Approved",HttpStatus.ACCEPTED);
-        }
-        throw new AccountNotFoundException("User Name OR Password is/are incorrect");
+    @PostMapping(value=url_login)
+    ResponseEntity<String> userCredentialsAuthentication(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
+        return accountService.authenticationValidation(userName,password);
     }
     @GetMapping()
-    List<Account> getAllAccount(){
+    List<Account> getAllAccounts(){
         return accountService.findAllAccounts();
     }
 
-    @GetMapping("{id}")
+    @GetMapping(value=url_id)
     Account getAccountById(@PathVariable(value="id") Integer id)  throws AccountNotFoundException {
         return accountService.findById(id);
     }
 
     @PutMapping()
-    ResponseEntity<String> putAccount(@Valid @RequestBody Account account) throws AccountNotFoundException{
-        account=accountService.findById(account.getAccountId());
+    ResponseEntity<String> updateAccountById(@Valid @RequestBody Account account) throws AccountNotFoundException{
              accountService.updateAccount(account);
              return new ResponseEntity("Account details with Account Id :"+account.getAccountId()+"  has been updated",HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<String> deleteAccount(@PathVariable Integer id){
+    @DeleteMapping(value = url_id)
+    ResponseEntity<String> deleteAccountById(@PathVariable Integer id){
         accountService.deleteAccount(id);
         return new ResponseEntity("Account  with Account Id :"+id+"  has been deleted",HttpStatus.ACCEPTED);
     }

@@ -19,7 +19,8 @@ public interface OrderRepository {
     //get order by order id
     List<OrderItem> findOrderById(int id);
 
-    void insertOrderFromCart(List<Order> orderList);
+
+    Order findMaximumOrderIdForAccountId(Integer id);
 
     //delete Order
     int deleteOrder(int id);

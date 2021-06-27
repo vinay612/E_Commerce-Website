@@ -13,11 +13,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @Repository("accountRepository")
@@ -79,7 +76,14 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     public void updateAccount(Account account){
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue("account_id",account.getAccountId());
+                .addValue("account_id",account.getAccountId())
+                .addValue("first_name", account.getFirstName())
+                .addValue("last_name", account.getLastName())
+                .addValue("user_name", account.getUserName())
+                .addValue("password", account.getPassword())
+                .addValue("address", account.getAddress())
+                .addValue("email_id", account.getEmailId())
+                .addValue("phone_number", account.getPhoneNumber());
         this.namedParameterJdbcTemplate.update(UPDATE_ACCOUNT,sqlParameterSource);
         return ;
     }
@@ -92,11 +96,4 @@ public class AccountRepositoryImpl implements AccountRepository {
         return;
     }
 
-
-
-
-
-
 }
-
-//account_id,first_name,last_name,user_name,password,address,email_id,phone_number

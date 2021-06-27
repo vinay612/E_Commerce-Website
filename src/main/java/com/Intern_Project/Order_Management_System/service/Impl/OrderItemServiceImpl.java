@@ -6,6 +6,8 @@ import com.Intern_Project.Order_Management_System.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderItemServiceImpl implements OrderItemService {
 
@@ -16,9 +18,9 @@ public class OrderItemServiceImpl implements OrderItemService {
     public int createTable() {
         return orderItemRepository.createTable();
     }
-
     @Override
-    public int addOrderItem(OrderItem orderItem) {
-        return orderItemRepository.addOrderItem(orderItem);
+    public void addOrderItem(List<OrderItem> orderItemList) {
+        orderItemRepository.addOrderItem(orderItemList);
+        return ;
     }
 }

@@ -32,12 +32,8 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String GET_ORDER_DETAILS_BY_USER_ID="SELECT Orders.order_Id,Orders.date,Orders.time ,OrderItem.product_Id,OrderItem.quantity,OrderItem.price from Orders,OrderItem Where Orders.order_Id=OrderItem.order_Id AND orders.user_id=:user_Id";
     private static final String GET_ORDER_DETAILS_BY_ORDER_ID="SELECT id,order_Id,product_Id,quantity,price FROM OrderItem WHERE order_Id=:order_Id";
     private static final String DELETE_ORDER="DELETE FROM Orders WHERE order_Id=:order_Id";
+    private static final String Max_Order_ID_For_Account_Id="Select * from Orders where user_id=:user_id ORDER BY order_id DESC LIMIT 1";
 
-    /*public OrderRepositoryImpl()
-    {
-
-    }*/
-    //, FOREIGN KEY(product_Id) references Product(product_Id)
     // Creating table Product
     public int createTable()
     {
@@ -80,18 +76,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         return rows;
     }
 
-    public void insertOrderFromCart(List<Order> orderList){
-        String query="INSERT INTO ORDERS(order_Id,user_Id,purchase_Date,purchase_Time,total_Price) VALUES(:order_Id,:user_Id,:purchase_Date,:purchase_Time,:total_Price)";
-        MapSqlParameterSource[] mapSqlParameterSource=orderList.stream()
-                .map(order -> new MapSqlParameterSource()
-                .addValue("order_Id",order.getOrderId())
-                        .addValue("user_Id",order.getUserId())
-                        .addValue("purchase_Date",order.getPurchaseDate())
-                .addValue("purchase_Time",order.getPurchaseTime())
-                .addValue("total_Price",order.getTotalPrice()))
-                .collect(Collectors.toList()).toArray(new MapSqlParameterSource[]{});
-        this.namedParameterJdbcTemplate.batchUpdate(query,mapSqlParameterSource);
-    }
+
     @Override
     public List<OrderItem> findOrderById(int id) {
 
@@ -109,5 +94,11 @@ public class OrderRepositoryImpl implements OrderRepository {
         //String query="DELETE FROM Orders WHERE order_Id=:order_Id";
         int rows= namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
         return rows;
+    }
+
+    public Order findMaximumOrderIdForAccountId(Integer id){
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("user_id",id);
+        Order maxOrderId = namedParameterJdbcTemplate.queryForObject(Max_Order_ID_For_Account_Id,sqlParameterSource,OrderRowMapper.INSTANCE);
+        return maxOrderId;
     }
 }
