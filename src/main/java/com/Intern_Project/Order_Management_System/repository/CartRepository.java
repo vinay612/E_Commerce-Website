@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface CartRepository {
     void createTable();
-    Cart insertCart(Cart cart);
-    List<Cart> findByAccountId(Integer id);
-    void deleteById(Integer id);
+    void insertCart(Cart cart);
+    List<Cart> findCartByAccountId(Integer id);
+    void deleteCartByCartId(Integer id);
 
-    Cart updateCart(Cart cart);
-    void deleteAll(List<Cart> cartList);
+    void updateCartById(Cart cart);
+    void deleteCartByAccountId(List<Cart> cartList);
 }

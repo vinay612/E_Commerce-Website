@@ -18,25 +18,27 @@ public class AccountServiceImpl implements AccountService {
     public void createTable(){
         accountRepository.createTable();
     }
-    public Account createAccount(Account account){
+    public void createAccount(Account account){
         System.out.println("In Service repo");
-        return accountRepository.createAccount(account);
+        accountRepository.insertAccount(account);
+        return;
     }
 
-    public List<Account> findAll(){
-        return accountRepository.findAll();
+    public List<Account> findAllAccounts(){
+        return accountRepository.findAllAccounts();
     }
 
     public Account findById(Integer id)  throws AccountNotFoundException {
-        return accountRepository.findById(id);
+        return accountRepository.findByAccountId(id);
     }
 
-    public Account updateAccount(Account account){
-        return accountRepository.updateAccount(account);
+    public void updateAccount(Account account){
+        accountRepository.updateAccount(account);
+        return;
     }
 
     public void deleteAccount(Integer id){
-        accountRepository.deleteAccount(id);
+        accountRepository.deleteAccountById(id);
         return;
     }
 }
