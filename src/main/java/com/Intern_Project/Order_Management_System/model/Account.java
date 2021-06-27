@@ -1,9 +1,12 @@
 package com.Intern_Project.Order_Management_System.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
-
+@Data
+@RequiredArgsConstructor
 public class Account {
 
     private int accountId;
@@ -25,7 +28,7 @@ public class Account {
     private String phoneNumber;
 
 
-    public Account() {
+   /* public Account() {
     }
 
     public int getAccountId() {
@@ -90,6 +93,6 @@ public class Account {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
+    }*/
 
 }

@@ -18,6 +18,7 @@ public class AccountServiceImpl implements AccountService {
     public void createTable(){
         accountRepository.createTable();
     }
+
     public Account createAccount(Account account){
         System.out.println("In Service repo");
         return accountRepository.createAccount(account);

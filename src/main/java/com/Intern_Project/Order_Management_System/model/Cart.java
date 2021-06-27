@@ -1,6 +1,11 @@
 package com.Intern_Project.Order_Management_System.model;
 
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class Cart {
 
     private int id;
@@ -9,7 +14,7 @@ public class Cart {
     private int quantity;
     private double totalPrice;
 
-    public Cart() {
+   /* public Cart() {
     }
 
     public int getId() {
@@ -50,5 +55,5 @@ public class Cart {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-    }
+    }*/
 }
