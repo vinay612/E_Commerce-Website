@@ -2,6 +2,8 @@ package com.Intern_Project.Order_Management_System.repository.Impl;
 
 import com.Intern_Project.Order_Management_System.repository.ProductRepository;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,6 +28,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    Logger log= LoggerFactory.getLogger(this.getClass());
+
     private static final String CREATE_TABLE="CREATE TABLE IF NOT EXISTS Product(product_Id int IDENTITY(1000,1) NOT NULL PRIMARY KEY,name varchar(30) NOT NULL , price double NOT NULL, description varchar(50),expiry_Date varchar(12) , min_Quantity int)";
     private static final String INSERT_PRODUCT="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (:name,:price,:description,:expiry_Date,:min_Quantity)";
     private static final String GET_ALL_PRODUCTS="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product";
@@ -33,26 +37,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final String GET_PRODUCT_BY_NAME="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
     private static final String BATCH_INSERT="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (?,?,?,?,?)";
 
-    /*public ProductRepositoryImpl(){
-
-    }*/
-    // Creating table Product
     @Override
-    public int createTable()
+    public void createTable()
     {
-        //String query="CREATE TABLE IF NOT EXISTS Product(product_Id int IDENTITY(1000,1) NOT NULL PRIMARY KEY,name varchar(30) NOT NULL , price double NOT NULL, description varchar(50),expiry_Date varchar(12) , min_Quantity int)";
         int update=this.jdbcTemplate.update(CREATE_TABLE);
-        return update;
+        log.info("Product Table has been created");
     }
 
-    // Insert a product.
     @Override
-    public int addProduct(Product product) {
-
-        //String query="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (:name,:price,:description,:expiry_Date,:min_Quantity)";
-        //String query="INSERT INTO PRODUCT(product_Id,name,price,description,expiry_Date,min_Quantity) VALUES (:product_Id,:name,:price,:description,:expiry_Date,:min_Quantity)";
-        //System.out.println("Product added");
-        //System.out.println(product.getProductId()+" "+product.getExpiryDate()+" "+product.getMinQuantity());
+    public void addProduct(Product product) {
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("name",product.getName())
                 .addValue("price",product.getPrice())
@@ -60,13 +53,12 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .addValue("expiry_Date",product.getExpiryDate())
                 .addValue("min_Quantity",product.getMinQuantity());
         int rows=namedParameterJdbcTemplate.update(INSERT_PRODUCT,mapSqlParameterSource);
-        return rows;
+        log.info("A new product has been added.");
 
     }
 
     @Override
     public List<Product> getAllproducts() {
-        //String query="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product";
         List<Product> allProducts = namedParameterJdbcTemplate.query(GET_ALL_PRODUCTS, ProductRowMapper.INSTANCE);
         return allProducts;
     }
@@ -74,7 +66,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product getProductById(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("product_Id",id);
-        //String query="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where product_Id=:product_Id";
         return namedParameterJdbcTemplate.queryForObject(GET_PRODUCT_BY_ID,sqlParameterSource,ProductRowMapper.INSTANCE);
     }
 
@@ -86,15 +77,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product getProductByName(String name) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("name",name);
-        //String query="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
         return namedParameterJdbcTemplate.queryForObject(GET_PRODUCT_BY_NAME,sqlParameterSource,ProductRowMapper.INSTANCE);
     }
 
-    public int[] insertBatch(List<Product> products){
-
-        //System.out.println("In Batch Insert Method");
-        //String query="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (?,?,?,?,?)";
-        return jdbcTemplate.batchUpdate(BATCH_INSERT, new BatchPreparedStatementSetter() {
+    public void insertBatch(List<Product> products){
+         jdbcTemplate.batchUpdate(BATCH_INSERT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
                 Product product=products.get(i);
@@ -108,7 +95,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
             @Override
             public int getBatchSize() {
-                return products.size();
+                int noProducts= products.size();
+                log.info(noProducts+" new products have been added");
+                return noProducts;
             }
         });
     }

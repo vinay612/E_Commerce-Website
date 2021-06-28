@@ -79,7 +79,7 @@ public class CartServiceImpl implements CartService {
             OrderItem orderItem=new OrderItem();
             orderItem.setOrderId(orderId);
             orderItem.setProductId(cart.getProductId());
-            orderItem.setQuantity(cart.getAccountId());
+            orderItem.setQuantity(cart.getQuantity());
             orderItem.setPrice(cart.getTotalPrice());
             orderItemList.add(orderItem);
         });

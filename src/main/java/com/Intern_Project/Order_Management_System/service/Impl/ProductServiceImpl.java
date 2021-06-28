@@ -20,8 +20,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int  addProduct(Product product) {
-        return productRepository.addProduct(product);
+    public void  addProduct(Product product) {
+        productRepository.addProduct(product);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int[] insertBatch(List<Product> products) {
-        return productRepository.insertBatch(products);
+    public void insertBatch(List<Product> products) {
+        productRepository.insertBatch(products);
     }
 
 }

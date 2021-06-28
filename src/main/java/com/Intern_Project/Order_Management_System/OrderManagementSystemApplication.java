@@ -31,8 +31,8 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		accountService.createTable();
-		cartService.createTable();
 		productService.createTable();
+		cartService.createTable();
 		orderService.createTable();
 		orderItemService.createTable();
 

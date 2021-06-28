@@ -6,7 +6,7 @@ import com.Intern_Project.Order_Management_System.model.OrderItem;
 
 public interface OrderRepository {
     //get list of all the orders.
-    int createTable();
+    void createTable();
 
     List<Order> findAll();
 
@@ -14,7 +14,7 @@ public interface OrderRepository {
     List<Order> findOrderDetailsByUserId(int id);
 
     //create order
-    int insertOrder(Order order);
+    void insertOrder(Order order);
 
     //get order by order id
     List<OrderItem> findOrderById(int id);
@@ -23,5 +23,5 @@ public interface OrderRepository {
     Order findMaximumOrderIdForAccountId(Integer id);
 
     //delete Order
-    int deleteOrder(int id);
+    void deleteOrder(int id);
 }

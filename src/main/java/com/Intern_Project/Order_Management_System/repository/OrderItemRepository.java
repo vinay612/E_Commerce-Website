@@ -7,7 +7,7 @@ import java.util.List;
 public interface OrderItemRepository {
 
     //create Table
-    int createTable();
+    void createTable();
 
     //post OrderItem
     void addOrderItem(List<OrderItem> orderItemList);

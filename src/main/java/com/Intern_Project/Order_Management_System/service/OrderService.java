@@ -10,7 +10,7 @@ public interface OrderService {
     void createTable();
 
     // add a new Order.
-    int insertOrder(Order order);
+    void insertOrder(Order order);
 
     //finds maximum orderId for a Account
     public Order findMaxOrderIdForAccountId(Integer id);
@@ -25,5 +25,5 @@ public interface OrderService {
     List<Order> findOrderDetailsByUserId(int id);
 
     //delete a order
-    int deleteOrder(int id);
+    void deleteOrder(int id);
 }

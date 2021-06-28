@@ -5,6 +5,8 @@ import com.Intern_Project.Order_Management_System.model.OrderItem;
 import com.Intern_Project.Order_Management_System.repository.OrderItemRepository;
 import com.Intern_Project.Order_Management_System.util.Status;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -23,15 +25,16 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate=new NamedParameterJdbcTemplate(new JdbcTemplate());
 
-    private static final String CREATE_TABLE="CREATE Table IF NOT EXISTS OrderItem (id int IDENTITY(100,1) PRIMARY KEY,order_Id int,product_Id int,quantity int,price double)";
+    private Logger log= LoggerFactory.getLogger(this.getClass());
+
+    private static final String CREATE_TABLE="CREATE Table IF NOT EXISTS OrderItem (id int IDENTITY(100,1) PRIMARY KEY,order_Id int,product_Id int,quantity int,price double,FOREIGN KEY(order_Id) references Orders(order_Id),FOREIGN KEY(product_Id) references Product(product_Id))";
     private static final String INSERT_ORDER_ITEM="INSERT INTO OrderItem(order_Id,product_Id,quantity,price) VALUES(:order_Id,:product_Id,:quantity,:price)";
 
 
     @Override
-    public int createTable(){
-       // String query="CREATE Table IF NOT EXISTS OrderItem (id int IDENTITY(100,1) PRIMARY KEY,order_Id int,product_Id int,quantity int,price double)";
-       // FOREIGN KEY(order_Id) references Orders(order_Id),FOREIGN KEY(product_Id) references Product(product_Id)
-        return this.jdbcTemplate.update(CREATE_TABLE);
+    public void createTable(){
+        int rows= this.jdbcTemplate.update(CREATE_TABLE);
+        log.info("OrderItem table has been created");
     }
 
 

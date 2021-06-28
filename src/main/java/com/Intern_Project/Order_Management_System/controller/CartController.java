@@ -17,11 +17,11 @@ public class CartController {
     private CartService cartService;
 
 
-    private static final String url_cart_checkout="/{id}/checkout";
-    private static final String url_id="{id}";
-    private static final String url_account_id="/account/{id}";
+    private static final String URL_CART_CHECKOUT="/{id}/checkout";
+    private static final String URL_ID="{id}";
+    private static final String URL_ACCOUNT_ID="/account/{id}";
 
-    @GetMapping(value = url_id)
+    @GetMapping(value = URL_ID)
     List<Cart> getCartByAccountId(@PathVariable Integer id){
         return cartService.findByAccountId(id);
     }
@@ -29,7 +29,7 @@ public class CartController {
     @PostMapping()
     ResponseEntity<String> postCart(@RequestBody Cart cart){
         cartService.insertCart(cart);
-        return new ResponseEntity("A new Product in a cart for Account Id "+cart.getAccountId(),HttpStatus.ACCEPTED);
+        return new ResponseEntity("A new Product in a cart for Account Id "+cart.getAccountId()+" has been added",HttpStatus.ACCEPTED);
     }
 
     @PutMapping()
@@ -38,19 +38,19 @@ public class CartController {
          return new ResponseEntity("Cart with cart id "+cart.getId()+" has been updated",HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(value = url_id)
+    @DeleteMapping(value = URL_ID)
     ResponseEntity<String> deleteCartById(@PathVariable(value="id") Integer id){
         cartService.deleteByCartId(id);
         return new ResponseEntity("Cart with cart id "+id+" has been deleted",HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(value = url_account_id)
+    @DeleteMapping(value = URL_ACCOUNT_ID)
     ResponseEntity<String> emptyCart( @PathVariable Integer id){
         cartService.deleteByAccountId(id);
         return new ResponseEntity("Cart of Account with Id "+id+" has been emptied", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = url_cart_checkout)
+    @PostMapping(value = URL_CART_CHECKOUT)
     ResponseEntity<String> placeAnOrder(@PathVariable Integer id){
         return cartService.cartCheckout(id);
     }

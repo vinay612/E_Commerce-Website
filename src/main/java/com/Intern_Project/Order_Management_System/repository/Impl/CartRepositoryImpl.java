@@ -35,7 +35,7 @@ public class CartRepositoryImpl implements CartRepository {
 
 
     //SQL Queries
-    private static final String CREATE_TABLE="CREATE TABLE IF NOT EXISTS Cart (id int IDENTITY(100,1) primary key,account_id int,product_id int,quantity int,total_price double)";
+    private static final String CREATE_TABLE="CREATE TABLE IF NOT EXISTS Cart (id int IDENTITY(100,1) primary key,account_id int,product_id int,quantity int,total_price double,FOREIGN KEY(account_id) REFERENCES Account(account_id),FOREIGN KEY(product_id) REFERENCES Product(product_Id))";
     private static final String INSERT_CART="Insert into Cart (account_id,product_id,quantity,total_price) values (:account_id,:product_id,:quantity,:total_price)";
     private static final String SELECT_BY_ACCOUNT_ID="Select * from Cart where account_id=:id";
     private static final String UPDATE_CART="Update Cart set quantity=:quantity , total_price= :total_price where id=:id";
@@ -43,8 +43,6 @@ public class CartRepositoryImpl implements CartRepository {
     public void createTable(){
         this.jdbcTemplate.update(CREATE_TABLE);
         log.info("Cart Table has been created");
-        this.jdbcTemplate.update(CREATE_TABLE);
-        System.out.println("Cart table created ");
     }
 
     public void insertCart(Cart cart){
@@ -57,7 +55,6 @@ public class CartRepositoryImpl implements CartRepository {
                 .addValue("total_price",cart.getQuantity()*price);
 
         int count=this.namedParameterJdbcTemplate.update(INSERT_CART,sqlParameterSource);
-
         log.info("Number of Rows inserted in cart Table is : {}",count);
         return ;
     }

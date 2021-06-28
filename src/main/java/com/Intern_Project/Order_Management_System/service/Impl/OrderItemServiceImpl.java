@@ -15,8 +15,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     OrderItemRepository orderItemRepository;
 
     @Override
-    public int createTable() {
-        return orderItemRepository.createTable();
+    public void createTable() {
+        orderItemRepository.createTable();
     }
     @Override
     public void addOrderItem(List<OrderItem> orderItemList) {

@@ -9,7 +9,7 @@ public interface ProductService {
     void createTable();
 
     // add a new Product.
-    int addProduct(Product product);
+    void addProduct(Product product);
 
     // get a list of all Products.
     List<Product> getAllProducts();
@@ -21,7 +21,7 @@ public interface ProductService {
     Product getProductByName(String name);
 
     //batch insert
-    int[] insertBatch(List<Product> products);
+    void insertBatch(List<Product> products);
 
 
 }

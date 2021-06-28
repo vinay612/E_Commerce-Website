@@ -22,8 +22,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int insertOrder(Order order) {
-        return orderRepository.insertOrder(order);
+    public void insertOrder(Order order) {
+        orderRepository.insertOrder(order);
     }
 
     public Order findMaxOrderIdForAccountId(Integer id){
@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int deleteOrder(int id) {
-        return orderRepository.deleteOrder(id);
+    public void deleteOrder(int id) {
+        orderRepository.deleteOrder(id);
     }
 }

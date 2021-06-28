@@ -18,17 +18,17 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    private static final String url_register="/register";
-    private static final String url_login="/login";
-    private static final String url_id="{id}";
+    private static final String URL_REGISTER="/register";
+    private static final String URL_LOGIN="/login";
+    private static final String URL_ID="{id}";
 
-    @PostMapping(value=url_register)
+    @PostMapping(value=URL_REGISTER)
     ResponseEntity<String> postAccount(@Valid @RequestBody Account account){
         accountService.createAccount(account);
         return new ResponseEntity("New Account has been Successfully Created",HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value=url_login)
+    @PostMapping(value=URL_LOGIN)
     ResponseEntity<String> userCredentialsAuthentication(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
         return accountService.authenticationValidation(userName,password);
     }
@@ -37,7 +37,7 @@ public class AccountController {
         return accountService.findAllAccounts();
     }
 
-    @GetMapping(value=url_id)
+    @GetMapping(value=URL_ID)
     Account getAccountById(@PathVariable(value="id") Integer id)  throws AccountNotFoundException {
         return accountService.findById(id);
     }
@@ -48,7 +48,7 @@ public class AccountController {
              return new ResponseEntity("Account details with Account Id :"+account.getAccountId()+"  has been updated",HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping(value = url_id)
+    @DeleteMapping(value = URL_ID)
     ResponseEntity<String> deleteAccountById(@PathVariable Integer id){
         accountService.deleteAccount(id);
         return new ResponseEntity("Account  with Account Id :"+id+"  has been deleted",HttpStatus.ACCEPTED);
