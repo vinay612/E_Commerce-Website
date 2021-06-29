@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.controller;
 
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class ProductController {
     private static final String URL_PRODUCT_NAME="/productName/{name}";
 
     @PostMapping(value=URL_ADD_PRODUCT)
-    ResponseEntity<String> insertProduct(@RequestBody Product product)
+    ResponseEntity<ResponseJson> insertProduct(@RequestBody Product product)
     {
          productService.addProduct(product);
-         return new ResponseEntity("A new product has been added", HttpStatus.CREATED);
+         return new ResponseEntity<>(new ResponseJson("Product has been added successfully"),HttpStatus.CREATED);
     }
 
     @GetMapping()
@@ -46,15 +47,15 @@ public class ProductController {
     }
 
     @PostMapping()
-    ResponseEntity<String> insertMultipleProducts(@RequestBody List<Product> products){
+    ResponseEntity<ResponseJson> insertMultipleProducts(@RequestBody List<Product> products){
         productService.addBatch(products);
-        return new ResponseEntity("Products have been successfully added",HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseJson("Products have been successfully added"),HttpStatus.CREATED);
     }
 
     @PutMapping()
-    ResponseEntity<String> updateProductByProductId(@RequestBody Product product)
+    ResponseEntity<ResponseJson> updateProductByProductId(@RequestBody Product product)
     {
         productService.updateProduct(product);
-        return new ResponseEntity("Product with product id "+product.getProductId()+" has been updated.",HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseJson("Product with product id "+product.getProductId()+" has been updated."),HttpStatus.OK);
     }
 }

@@ -1,7 +1,11 @@
 package com.Intern_Project.Order_Management_System.exception;
 
 import com.Intern_Project.Order_Management_System.util.Error.ErrorMessage;
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,49 +20,60 @@ import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    private final Logger log= LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     List<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception){
         List<FieldError> fieldErrors=exception.getBindingResult().getFieldErrors();
-        List<ErrorMessage> fieldErrorMessage=fieldErrors.stream().map(fieldError -> new ErrorMessage(fieldError.getField(), fieldError.getDefaultMessage())).collect(Collectors.toList());
-        return fieldErrorMessage;
+        return fieldErrors.stream().map(fieldError -> new ErrorMessage(fieldError.getField(), fieldError.getDefaultMessage())).collect(Collectors.toList());
     }
 
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception){
-        return new ResponseEntity(exception.getLocalizedMessage(),HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidFormatException.class)
-    ResponseEntity<String> handleInvalidFormatException(InvalidFormatException exception){
-        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleInvalidFormatException(InvalidFormatException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
 
 
     @ExceptionHandler(ValidationException.class)
-    ResponseEntity<String> handleValidationException(ValidationException exception){
-        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleValidationException(ValidationException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccountExistsException.class)
-    ResponseEntity<String> handleAccountExistsException(AccountExistsException exception){
-        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleAccountExistsException(AccountExistsException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccountNotFoundException.class)
-    ResponseEntity<String> handleAccountNotFoundException(AccountNotFoundException exception){
-        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleAccountNotFoundException(AccountNotFoundException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ResponseEntity<ResponseJson> handleDataIntegrityViolationException(DataIntegrityViolationException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
-    ResponseEntity<String> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception){
-        return new ResponseEntity("Account with given id not found",HttpStatus.BAD_REQUEST);
+    ResponseEntity<ResponseJson> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception){
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseJson> handleException(Exception exception) {
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
 

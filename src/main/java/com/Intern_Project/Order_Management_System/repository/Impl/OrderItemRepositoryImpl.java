@@ -3,6 +3,7 @@ package com.Intern_Project.Order_Management_System.repository.Impl;
 import com.Intern_Project.Order_Management_System.model.Order;
 import com.Intern_Project.Order_Management_System.model.OrderItem;
 import com.Intern_Project.Order_Management_System.repository.OrderItemRepository;
+import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import com.Intern_Project.Order_Management_System.util.Status;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
@@ -44,17 +45,17 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
 
         MapSqlParameterSource[] mapSqlParameterSource=orderItemList.stream()
                 .map(orderItem -> new MapSqlParameterSource()
-                        .addValue("order_Id",orderItem.getOrderId())
-                        .addValue("product_Id",orderItem.getProductId())
-                        .addValue("quantity",orderItem.getQuantity())
-                        .addValue("price",orderItem.getPrice()))
+                        .addValue(ApplicationConstants.ORDER_ID,orderItem.getOrderId())
+                        .addValue(ApplicationConstants.PRODUCT_ID,orderItem.getProductId())
+                        .addValue(ApplicationConstants.QUANTITY,orderItem.getQuantity())
+                        .addValue(ApplicationConstants.PRICE,orderItem.getPrice()))
                 .collect(Collectors.toList()).toArray(new MapSqlParameterSource[]{});
         this.namedParameterJdbcTemplate.batchUpdate(INSERT_ORDER_ITEM,mapSqlParameterSource);
     }
 
     @Override
     public void deleteOrderItemById(int id) {
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("order_Id",id);
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
         namedParameterJdbcTemplate.update(DELETE_ORDERITEM,sqlParameterSource);
         log.info("OrderItem with order id {} has been deleted",id);
     }

@@ -1,6 +1,7 @@
 package com.Intern_Project.Order_Management_System.service;
 
 import com.Intern_Project.Order_Management_System.model.Cart;
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface CartService {
 
     void insertCart(Cart cart);
 
-    ResponseEntity<String> cartCheckout(Integer id);
+    ResponseEntity<ResponseJson> cartCheckout(Integer id);
 
     List<Cart> findByAccountId(Integer id);
 

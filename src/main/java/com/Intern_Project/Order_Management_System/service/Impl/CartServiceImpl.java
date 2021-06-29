@@ -7,6 +7,7 @@ import com.Intern_Project.Order_Management_System.model.Cart;
 import com.Intern_Project.Order_Management_System.repository.CartRepository;
 import com.Intern_Project.Order_Management_System.service.OrderItemService;
 import com.Intern_Project.Order_Management_System.service.OrderService;
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +30,27 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private OrderItemService orderItemService;
 
+    public static int orderId=99;
+
     @Override
     public void createTable(){
         cartRepository.createTable();
     }
     @Override
     public void insertCart(Cart cart){
-         cartRepository.insertCart(cart);
-         return;
+        List<Cart> cartList=cartRepository.findCartByAccountId(cart.getAccountId());
+        int counter=0;
+        for(Cart cart1: cartList){
+            if(cart1.getProductId() == cart.getProductId()){
+                cart.setQuantity(cart.getQuantity()+cart1.getQuantity());
+                cart.setCartId(cart1.getCartId());
+                cartRepository.updateCartById(cart);
+                counter=1;
+                break;
+            }
+        }
+        if(counter==0)
+            cartRepository.insertCart(cart);
     }
 
     public List<Cart> findByAccountId(Integer id){
@@ -45,7 +59,6 @@ public class CartServiceImpl implements CartService {
 
     public void updateCart(Cart cart){
          cartRepository.updateCartById(cart);
-         return;
     }
 
     public void deleteByCartId(Integer id){
@@ -53,13 +66,11 @@ public class CartServiceImpl implements CartService {
     }
 
     public void deleteByAccountId(Integer id){
-        List<Cart> cartList=cartRepository.findCartByAccountId(id);
-        cartRepository.deleteCartByAccountId(cartList);
-        return;
+        cartRepository.deleteCartByAccountId(cartRepository.findCartByAccountId(id));
 
     }
 
-    public ResponseEntity<String> cartCheckout(Integer id){
+    public ResponseEntity<ResponseJson> cartCheckout(Integer id){
 
         double totalPrice=0;
         int accountId;
@@ -73,7 +84,8 @@ public class CartServiceImpl implements CartService {
         Order order=new Order(0,accountId,LocalDate.now().toString(),LocalTime.now().toString(),totalPrice);
         orderService.addOrder(order);
 
-        final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
+        orderId++;
+        //final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
 
         carts.forEach(cart -> {
             OrderItem orderItem=new OrderItem();
@@ -86,6 +98,6 @@ public class CartServiceImpl implements CartService {
         orderItemService.addOrderItem(orderItemList);
 
         cartRepository.deleteCartByAccountId(carts);
-        return new ResponseEntity("Order for Account Id "+carts.get(0).getAccountId()+" has been placed ", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("Order for Account Id "+carts.get(0).getAccountId()+" has been placed. "), HttpStatus.ACCEPTED);
     }
 }

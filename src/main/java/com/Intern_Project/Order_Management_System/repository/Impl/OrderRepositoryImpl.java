@@ -1,6 +1,7 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
 import com.Intern_Project.Order_Management_System.repository.OrderRepository;
+import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> findOrderDetailsByUserId(int id) {
 
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("user_Id",id);
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.USER_ID,id);
         return namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_USER_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
 
     }
@@ -61,31 +62,31 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void insertOrder(Order order) {
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("user_Id",order.getUserId()) //todo
-                .addValue("purchase_Date",order.getPurchaseDate())
-                .addValue("purchase_Time",order.getPurchaseTime())
-                .addValue("total_Price",order.getTotalPrice());
+        mapSqlParameterSource.addValue(ApplicationConstants.USER_ID,order.getUserId()) //todo
+                .addValue(ApplicationConstants.PURCHASE_DATE,order.getPurchaseDate())
+                .addValue(ApplicationConstants.PURCHASE_TIME,order.getPurchaseTime())
+                .addValue(ApplicationConstants.ORDER_TOTAL_PRICE,order.getTotalPrice());
         namedParameterJdbcTemplate.update(INSERT_ORDER,mapSqlParameterSource);
-        log.info("A new order has been placed."); //todo
+        log.info("A new order has been placed.");
     }
 
 
     @Override
     public List<OrderItem> findOrderById(int id) {
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("order_Id",id);
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
         return namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_ORDER_ID,sqlParameterSource,OrderItemRowMapper.INSTANCE);
 
     }
 
     @Override
     public void deleteOrder(int id) {
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("order_Id",id);
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
         namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
         log.info("Order with order id {} has been deleted.",id);
     }
 
     public Order findMaximumOrderIdForAccountId(Integer id){
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("user_id",id);
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.USER_ID,id);
         return namedParameterJdbcTemplate.queryForObject(MAX_ORDER_ID_FOR_ACCOUNT_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
     }
 

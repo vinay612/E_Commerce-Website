@@ -2,6 +2,8 @@ package com.Intern_Project.Order_Management_System.controller;
 
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.service.AccountService;
+import com.Intern_Project.Order_Management_System.service.CartService;
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +20,22 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private CartService cartService;
+
     private static final String URL_REGISTER="/register";
     private static final String URL_LOGIN="/login";
     private static final String URL_ID="{id}";
 
     @PostMapping(value=URL_REGISTER)
-    ResponseEntity<String> postAccount(@Valid @RequestBody Account account){
+    ResponseEntity<ResponseJson> postAccount(@Valid @RequestBody Account account){
         accountService.createAccount(account);
-        return new ResponseEntity("New Account has been Successfully Created",HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("New Account has been Successfully Created"),HttpStatus.CREATED);
     }
 
-    @PostMapping(value=URL_LOGIN)
-    ResponseEntity<String> userCredentialsAuthentication(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
-        return accountService.authenticationValidation(userName,password);
+    @GetMapping(value=URL_LOGIN)
+    ResponseEntity<ResponseJson> authenticateUserCredentials(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
+        return accountService.validateAuthentication(userName,password);
     }
     @GetMapping()
     List<Account> getAllAccounts(){
@@ -43,14 +48,15 @@ public class AccountController {
     }
 
     @PutMapping()
-    ResponseEntity<String> updateAccountById(@Valid @RequestBody Account account) throws AccountNotFoundException{
+    ResponseEntity<ResponseJson> updateAccountById(@Valid @RequestBody Account account) throws AccountNotFoundException{
              accountService.updateAccount(account);
-             return new ResponseEntity("Account details with Account Id :"+account.getAccountId()+"  has been updated",HttpStatus.ACCEPTED);
+             return new ResponseEntity<>(new ResponseJson("Account details with Account Id "+account.getAccountId()+"  has been updated"),HttpStatus.OK);
     }
 
     @DeleteMapping(value = URL_ID)
-    ResponseEntity<String> deleteAccountById(@PathVariable Integer id){
+    ResponseEntity<ResponseJson> deleteAccountById(@PathVariable Integer id){
+        cartService.deleteByAccountId(id);
         accountService.deleteAccount(id);
-        return new ResponseEntity("Account  with Account Id :"+id+"  has been deleted",HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("Account  with Account Id "+id+"  has been deleted"),HttpStatus.OK);
     }
 }
