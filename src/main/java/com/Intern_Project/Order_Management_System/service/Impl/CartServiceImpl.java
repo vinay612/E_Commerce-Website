@@ -30,6 +30,8 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private OrderItemService orderItemService;
 
+    public static int orderId=99;
+
     @Override
     public void createTable(){
         cartRepository.createTable();
@@ -82,7 +84,8 @@ public class CartServiceImpl implements CartService {
         Order order=new Order(0,accountId,LocalDate.now().toString(),LocalTime.now().toString(),totalPrice);
         orderService.insertOrder(order);
 
-        final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
+        orderId++;
+        //final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
 
         carts.forEach(cart -> {
             OrderItem orderItem=new OrderItem();
