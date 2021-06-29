@@ -1,6 +1,7 @@
 package com.Intern_Project.Order_Management_System.service.Impl;
 
 import com.Intern_Project.Order_Management_System.model.OrderItem;
+import com.Intern_Project.Order_Management_System.repository.OrderItemRepository;
 import com.Intern_Project.Order_Management_System.repository.OrderRepository;
 import com.Intern_Project.Order_Management_System.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,10 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void createTable() {
@@ -22,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void insertOrder(Order order) {
+    public void addOrder(Order order) {
         orderRepository.insertOrder(order);
     }
 
@@ -31,22 +35,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAll() {
-        return orderRepository.findAll();
+    public List<Order> getAllOrderDetails() {
+        return orderRepository.findAllOrders();
     }
 
     @Override
-    public List<OrderItem> findOrderById(int id) {
+    public List<OrderItem> getOrderById(int id) {
         return orderRepository.findOrderById(id);
     }
 
     @Override
-    public List<Order> findOrderDetailsByUserId(int id) {
+    public List<Order> getOrderDetailsByUserId(int id) {
         return orderRepository.findOrderDetailsByUserId(id);
     }
 
     @Override
     public void deleteOrder(int id) {
+        orderItemRepository.deleteOrderItemById(id);
         orderRepository.deleteOrder(id);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository productRepository;
+   private ProductRepository productRepository;
 
     @Override
     public void createTable() {
@@ -21,27 +21,31 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void  addProduct(Product product) {
-        productRepository.addProduct(product);
+        productRepository.insertProduct(product);
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.getAllproducts();
+        return productRepository.findAllproducts();
     }
 
     @Override
     public Product getProductById(int id) {
-        return productRepository.getProductById(id);
+        return productRepository.findProductById(id);
     }
 
     @Override
     public Product getProductByName(String name) {
-        return productRepository.getProductByName(name);
+        return productRepository.findProductByName(name);
     }
 
     @Override
-    public void insertBatch(List<Product> products) {
+    public void addBatch(List<Product> products) {
         productRepository.insertBatch(products);
     }
 
+    @Override
+    public void updateProduct(Product product) {
+        productRepository.updateProductById(product);
+    }
 }

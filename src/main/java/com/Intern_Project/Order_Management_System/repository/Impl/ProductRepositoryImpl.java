@@ -17,6 +17,7 @@ import com.Intern_Project.Order_Management_System.util.RowMapper.ProductRowMappe
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Repository
@@ -36,51 +37,51 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final String GET_PRODUCT_BY_ID="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where product_Id=:product_Id";
     private static final String GET_PRODUCT_BY_NAME="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
     private static final String BATCH_INSERT="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (?,?,?,?,?)";
+    private static final String UPDATE_PRODUCT="UPDATE Product set price=:price where product_Id=:product_Id";
+    public static final String CONSTANT_PRODUCT_ID="product_Id";
+    public static final String CONSTANT_PRICE="price";
+    public static final String CONSTANT_NAME="name";
+    public static final String CONSTANT_EXPIRY_DATE="expiry_Date";
 
     @Override
     public void createTable()
     {
-        int update=this.jdbcTemplate.update(CREATE_TABLE);
+        this.jdbcTemplate.update(CREATE_TABLE);
         log.info("Product Table has been created");
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void insertProduct(Product product) {
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
         mapSqlParameterSource.addValue("name",product.getName())
                 .addValue("price",product.getPrice())
                 .addValue("description",product.getDescription())
                 .addValue("expiry_Date",product.getExpiryDate())
                 .addValue("min_Quantity",product.getMinQuantity());
-        int rows=namedParameterJdbcTemplate.update(INSERT_PRODUCT,mapSqlParameterSource);
+        namedParameterJdbcTemplate.update(INSERT_PRODUCT,mapSqlParameterSource);
         log.info("A new product has been added.");
 
     }
 
     @Override
-    public List<Product> getAllproducts() {
-        List<Product> allProducts = namedParameterJdbcTemplate.query(GET_ALL_PRODUCTS, ProductRowMapper.INSTANCE);
-        return allProducts;
+    public List<Product> findAllproducts() {
+        return namedParameterJdbcTemplate.query(GET_ALL_PRODUCTS, ProductRowMapper.INSTANCE);
+
     }
 
     @Override
-    public Product getProductById(int id) {
+    public Product findProductById(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("product_Id",id);
         return namedParameterJdbcTemplate.queryForObject(GET_PRODUCT_BY_ID,sqlParameterSource,ProductRowMapper.INSTANCE);
     }
 
     @Override
-    public List<Product> sortByProductPrice() {
-        return null;
-    }
-
-    @Override
-    public Product getProductByName(String name) {
+    public Product findProductByName(String name) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("name",name);
         return namedParameterJdbcTemplate.queryForObject(GET_PRODUCT_BY_NAME,sqlParameterSource,ProductRowMapper.INSTANCE);
     }
 
-    public void insertBatch(List<Product> products){
+   /* public void insertBatch(List<Product> products){  //todo
          jdbcTemplate.batchUpdate(BATCH_INSERT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
@@ -100,7 +101,28 @@ public class ProductRepositoryImpl implements ProductRepository {
                 return noProducts;
             }
         });
+    }*/
+
+    @Override
+    public void insertBatch(List<Product> productList) {
+        MapSqlParameterSource[] mapSqlParameterSource=productList.stream()
+                .map(product -> new MapSqlParameterSource()
+                        .addValue("name",product.getName())
+                        .addValue("price",product.getPrice())
+                        .addValue("description",product.getDescription())
+                        .addValue("expiry_Date",product.getExpiryDate())
+                .addValue("min_Quantity",product.getMinQuantity()))
+                .collect(Collectors.toList()).toArray(new MapSqlParameterSource[]{});
+        this.namedParameterJdbcTemplate.batchUpdate(INSERT_PRODUCT,mapSqlParameterSource);
     }
 
+    @Override
+    public void updateProductById(Product product) {
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
+                .addValue(CONSTANT_PRODUCT_ID,product.getProductId())
+                .addValue(CONSTANT_PRICE,product.getPrice());
+        this.namedParameterJdbcTemplate.update(UPDATE_PRODUCT,sqlParameterSource);
+        log.info("Product with product id {} has been updated",product.getProductId());
 
+    }
 }

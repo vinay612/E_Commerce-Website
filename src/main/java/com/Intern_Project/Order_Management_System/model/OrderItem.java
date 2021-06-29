@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderItem {
 
-    private int id;
+    private int itemId;
     private int productId;
     private int quantity;
     private int orderId;

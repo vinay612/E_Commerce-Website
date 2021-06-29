@@ -12,15 +12,15 @@ import java.util.List;
 public class OrderItemServiceImpl implements OrderItemService {
 
     @Autowired
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void createTable() {
         orderItemRepository.createTable();
     }
     @Override
+
     public void addOrderItem(List<OrderItem> orderItemList) {
-        orderItemRepository.addOrderItem(orderItemList);
-        return ;
+        orderItemRepository.insertOrderItem(orderItemList);
     }
 }

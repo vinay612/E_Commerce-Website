@@ -71,7 +71,7 @@ public class CartServiceImpl implements CartService {
         }
         accountId=carts.get(0).getAccountId();
         Order order=new Order(0,accountId,LocalDate.now().toString(),LocalTime.now().toString(),totalPrice);
-        orderService.insertOrder(order);
+        orderService.addOrder(order);
 
         final int orderId = orderService.findMaxOrderIdForAccountId(accountId).getOrderId();
 

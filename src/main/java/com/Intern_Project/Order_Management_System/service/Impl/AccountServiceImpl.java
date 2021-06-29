@@ -30,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accounts=accountRepository.findAllAccounts();
         accounts.forEach(user ->{
             if(user.getEmailId().equalsIgnoreCase(account.getEmailId()))
-                throw new AccountExistsException("Account with the given email Id already Exists");
+                throw new AccountExistsException("Account with the given email Id already Exists"); //todo
             else if(user.getPhoneNumber().equals(account.getPhoneNumber()))
                 throw new AccountExistsException("Account with the given phone number already Exists");
             else if(user.getUserName().equalsIgnoreCase(account.getUserName()))
@@ -38,7 +38,6 @@ public class AccountServiceImpl implements AccountService {
         });
         log.info("A new Account with Account Id {} has been inserted",account.getAccountId());
         accountRepository.insertAccount(account);
-        return;
     }
 
     public ResponseEntity<String> authenticationValidation(String userName, String password) throws AccountNotFoundException {

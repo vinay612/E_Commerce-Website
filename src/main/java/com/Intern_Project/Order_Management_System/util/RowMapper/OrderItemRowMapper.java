@@ -13,7 +13,7 @@ public enum OrderItemRowMapper implements RowMapper<OrderItem> {
     @Override
     public OrderItem mapRow(ResultSet resultSet, int i) throws SQLException {
         OrderItem orderItem=new OrderItem();
-        orderItem.setId(resultSet.getInt("id"));
+        orderItem.setItemId(resultSet.getInt("item_Id"));
         orderItem.setOrderId(resultSet.getInt("order_Id"));
         orderItem.setProductId(resultSet.getInt("product_Id"));
         orderItem.setQuantity(resultSet.getInt("quantity"));

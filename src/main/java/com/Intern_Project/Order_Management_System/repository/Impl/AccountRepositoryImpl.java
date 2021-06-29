@@ -50,16 +50,15 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .addValue("address", account.getAddress())
                 .addValue("email_id", account.getEmailId())
                 .addValue("phone_number", account.getPhoneNumber());
-        log.info("In Repository repo {}", account.getAccountId());
-        int q = this.namedParameterJdbcTemplate.update(INSERT_ACCOUNT, sqlParameterSource);
+        log.info("In Repository repo {}", account.getAccountId());  //todo
+        this.namedParameterJdbcTemplate.update(INSERT_ACCOUNT, sqlParameterSource);
         log.info("A new Account has been created");
-        return;
     }
 
 
 
     public List<Account> findAllAccounts(){
-        List<Account> accounts=new ArrayList<>();
+        List<Account> accounts=new ArrayList<>();   //todo
         accounts=this.namedParameterJdbcTemplate.query(SELECT_ALL,AccountRowMapper.INSTANCE);
         return accounts;
     }
@@ -67,8 +66,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     public Account findByAccountId(Integer id){
 
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue("account_id",id);
-
+                .addValue("account_id",id); //todo
         Account account=this.namedParameterJdbcTemplate.queryForObject(SELECT_BY_ID,sqlParameterSource,AccountRowMapper.INSTANCE);
         log.info("Account with Account Id {} has been found",id);
         return account;
@@ -85,13 +83,12 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .addValue("email_id", account.getEmailId())
                 .addValue("phone_number", account.getPhoneNumber());
         this.namedParameterJdbcTemplate.update(UPDATE_ACCOUNT,sqlParameterSource);
-        return ;
     }
 
     public void deleteAccountById(Integer id){
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue("account_id",id);
-        Account account=findByAccountId(id);
+        Account account=findByAccountId(id);  //todo
         this.namedParameterJdbcTemplate.update(DELETE_ACCOUNT,sqlParameterSource);
         return;
     }

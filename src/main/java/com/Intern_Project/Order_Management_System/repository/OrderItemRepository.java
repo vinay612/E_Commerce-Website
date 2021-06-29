@@ -10,5 +10,8 @@ public interface OrderItemRepository {
     void createTable();
 
     //post OrderItem
-    void addOrderItem(List<OrderItem> orderItemList);
+    void insertOrderItem(List<OrderItem> orderItemList);
+
+    //delete OrderItem
+    void deleteOrderItemById(int id);
 }

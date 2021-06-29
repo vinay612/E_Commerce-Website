@@ -9,21 +9,21 @@ public interface ProductRepository {
     void createTable();
 
     // get list of all the products present.
-    List<Product> getAllproducts();
+    List<Product> findAllproducts();
 
     // get a particular product by id.
-    Product getProductById(int id);
-
-    // get list of Products sorted according to price;
-    List<Product> sortByProductPrice();
+    Product findProductById(int id);
 
     // get a Product by name.
-    Product getProductByName(String name);
+    Product findProductByName(String name);
 
     // post
-    void addProduct(Product product);
+    void insertProduct(Product product);
 
     //batch insert
     void insertBatch(List<Product> products);
+
+    //update product details
+    void updateProductById(Product product);
 
 }

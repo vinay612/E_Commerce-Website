@@ -21,7 +21,10 @@ public interface ProductService {
     Product getProductByName(String name);
 
     //batch insert
-    void insertBatch(List<Product> products);
+    void addBatch(List<Product> products);
+
+    //update product
+    void updateProduct(Product product);
 
 
 }

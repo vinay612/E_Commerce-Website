@@ -10,19 +10,19 @@ public interface OrderService {
     void createTable();
 
     // add a new Order.
-    void insertOrder(Order order);
+    void addOrder(Order order);
 
     //finds maximum orderId for a Account
     public Order findMaxOrderIdForAccountId(Integer id);
 
     // get all the Orders.
-    List<Order> findAll();
+    List<Order> getAllOrderDetails();
 
     // get details of a particular order by id.
-    List<OrderItem> findOrderById(int id);
+    List<OrderItem> getOrderById(int id);
 
     // get details of all orders of a particular user.
-    List<Order> findOrderDetailsByUserId(int id);
+    List<Order> getOrderDetailsByUserId(int id);
 
     //delete a order
     void deleteOrder(int id);

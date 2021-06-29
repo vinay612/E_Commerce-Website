@@ -8,7 +8,8 @@ public interface OrderRepository {
     //get list of all the orders.
     void createTable();
 
-    List<Order> findAll();
+    //find all Orders
+    List<Order> findAllOrders();
 
     //get Order details of a particular user.
     List<Order> findOrderDetailsByUserId(int id);

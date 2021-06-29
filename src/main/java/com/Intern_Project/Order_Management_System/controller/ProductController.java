@@ -10,44 +10,51 @@ import com.Intern_Project.Order_Management_System.service.ProductService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     private static final String URL_ADD_PRODUCT="/product";
-    private static final String URL_PRODUCT_ID="/product/{id}";
+    private static final String URL_PRODUCT_ID="{id}";
     private static final String URL_PRODUCT_NAME="/productName/{name}";
-    private static final String URL_ADD_OR_GET_PRODUCTS="/products";
 
     @PostMapping(value=URL_ADD_PRODUCT)
-    ResponseEntity<String> addProduct(@RequestBody Product product)
+    ResponseEntity<String> insertProduct(@RequestBody Product product)
     {
          productService.addProduct(product);
          return new ResponseEntity("A new product has been added", HttpStatus.CREATED);
     }
 
-    @GetMapping(value=URL_ADD_OR_GET_PRODUCTS)
+    @GetMapping()
     List<Product> getAllProducts()
     {
         return productService.getAllProducts();
     }
 
     @GetMapping(value=URL_PRODUCT_ID)
-    Product getProductById(@PathVariable("id") int id)
+    Product getProductDetailsById(@PathVariable("id") int id)
     {
         return productService.getProductById(id);
     }
 
     @GetMapping(value=URL_PRODUCT_NAME)
-    Product getProductByName(@PathVariable("name") String name)
+    Product getProductDetailsByName(@PathVariable("name") String name)
     {
         return productService.getProductByName(name);
     }
 
-    @PostMapping(value=URL_ADD_OR_GET_PRODUCTS)
-    ResponseEntity<String> insertProducts(@RequestBody List<Product> products){
-        productService.insertBatch(products);
+    @PostMapping()
+    ResponseEntity<String> insertMultipleProducts(@RequestBody List<Product> products){
+        productService.addBatch(products);
         return new ResponseEntity("Products have been successfully added",HttpStatus.CREATED);
+    }
+
+    @PutMapping()
+    ResponseEntity<String> updateProductByProductId(@RequestBody Product product)
+    {
+        productService.updateProduct(product);
+        return new ResponseEntity("Product with product id "+product.getProductId()+" has been updated.",HttpStatus.OK);
     }
 }

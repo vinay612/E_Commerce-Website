@@ -34,63 +34,60 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String GET_ALL_ORDERS="SELECT order_Id,user_Id,purchase_Date,purchase_Time,total_Price from Orders";
     private static final String INSERT_ORDER="INSERT INTO ORDERS(user_Id,purchase_Date,purchase_Time,total_Price) VALUES(:user_Id,:purchase_Date,:purchase_Time,:total_Price)";
     private static final String GET_ORDER_DETAILS_BY_USER_ID="SELECT order_Id,user_Id,purchase_Date,purchase_Time,total_Price FROM Orders WHERE user_Id=:user_Id";
-    private static final String GET_ORDER_DETAILS_BY_ORDER_ID="SELECT id,order_Id,product_Id,quantity,price FROM OrderItem WHERE order_Id=:order_Id";
+    private static final String GET_ORDER_DETAILS_BY_ORDER_ID="SELECT item_Id,order_Id,product_Id,quantity,price FROM OrderItem WHERE order_Id=:order_Id";
     private static final String DELETE_ORDER="DELETE FROM Orders WHERE order_Id=:order_Id";
     private static final String MAX_ORDER_ID_FOR_ACCOUNT_ID="Select * from Orders where user_id=:user_id ORDER BY order_id DESC LIMIT 1";
 
     // Creating table Product
     public void createTable()
     {
-        int rows=this.jdbcTemplate.update(CREATE_TABLE);
+        this.jdbcTemplate.update(CREATE_TABLE);
         log.info("Order Table has been created.");
     }
 
     @Override
-    public List<Order> findAll() {
-        List<Order> allOrders = namedParameterJdbcTemplate.query(GET_ALL_ORDERS, OrderRowMapper.INSTANCE);
-        return allOrders;
+    public List<Order> findAllOrders() {
+        return namedParameterJdbcTemplate.query(GET_ALL_ORDERS, OrderRowMapper.INSTANCE);
     }
 
     @Override
     public List<Order> findOrderDetailsByUserId(int id) {
 
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("user_Id",id);
-        List<Order> userOrders=namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_USER_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
-        return userOrders;
+        return namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_USER_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
+
     }
 
     @Override
     public void insertOrder(Order order) {
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue("user_Id",order.getUserId())
+        mapSqlParameterSource.addValue("user_Id",order.getUserId()) //todo
                 .addValue("purchase_Date",order.getPurchaseDate())
                 .addValue("purchase_Time",order.getPurchaseTime())
                 .addValue("total_Price",order.getTotalPrice());
-
-        System.out.println(order.getPurchaseDate()+" "+order.getPurchaseTime());
-        int rows=namedParameterJdbcTemplate.update(INSERT_ORDER,mapSqlParameterSource);
-        log.info("A new order has been placed.");
+        namedParameterJdbcTemplate.update(INSERT_ORDER,mapSqlParameterSource);
+        log.info("A new order has been placed."); //todo
     }
 
 
     @Override
     public List<OrderItem> findOrderById(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("order_Id",id);
-        List<OrderItem> items=namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_ORDER_ID,sqlParameterSource,OrderItemRowMapper.INSTANCE);
-        return items;
+        return namedParameterJdbcTemplate.query(GET_ORDER_DETAILS_BY_ORDER_ID,sqlParameterSource,OrderItemRowMapper.INSTANCE);
 
     }
 
     @Override
     public void deleteOrder(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("order_Id",id);
-        int rows= namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
-        log.info("Order with order id {} had been deleted.",id);
+        namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
+        log.info("Order with order id {} has been deleted.",id);
     }
 
     public Order findMaximumOrderIdForAccountId(Integer id){
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue("user_id",id);
-        Order maxOrderId = namedParameterJdbcTemplate.queryForObject(MAX_ORDER_ID_FOR_ACCOUNT_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
-        return maxOrderId;
+        return namedParameterJdbcTemplate.queryForObject(MAX_ORDER_ID_FOR_ACCOUNT_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
     }
+
+
 }
