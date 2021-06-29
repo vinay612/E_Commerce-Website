@@ -46,7 +46,7 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
         MapSqlParameterSource[] mapSqlParameterSource=orderItemList.stream()
                 .map(orderItem -> new MapSqlParameterSource()
                         .addValue(ApplicationConstants.ORDER_ID,orderItem.getOrderId())
-                        .addValue(ApplicationConstants.PRODUCT_ID,orderItem.getProductId())
+                        .addValue(ApplicationConstants.PRODUCT_PRODUCTID,orderItem.getProductId())
                         .addValue(ApplicationConstants.QUANTITY,orderItem.getQuantity())
                         .addValue(ApplicationConstants.PRICE,orderItem.getPrice()))
                 .collect(Collectors.toList()).toArray(new MapSqlParameterSource[]{});

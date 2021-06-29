@@ -18,7 +18,7 @@ public class OrderController {
    private OrderService orderService;
 
     private static final String URL_ORDER_ID="{id}";
-    private static final String URL_USER_ID="userId/{id}";
+    private static final String URL_USER_ID="accountId/{id}";
 
     @PostMapping()
     ResponseEntity<ResponseJson> createOrder(@RequestBody Order order){
