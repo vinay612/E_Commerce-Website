@@ -1,11 +1,11 @@
 package com.Intern_Project.Order_Management_System.model;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
 @Data
 @RequiredArgsConstructor
 public class Account {
@@ -22,8 +22,8 @@ public class Account {
     private String address;
     @Email(message = "EmailId is not valid")
     private String emailId;
-    @NotNull(message = "Phone Number must be only numeric with 10 digits")
-    @Pattern(regexp = "^[0-9]{10}$",message = "Phone Number must be only numeric with 10 digits")
-    private String phoneNumber;
+    @Range(message = "Phone Number must be only numeric with 10 digits",min = 100000000)
+    @Digits(integer = 10,fraction = 0,message = "Phone Number must be only numeric with 10 digits")
+    private long phoneNumber;
 
 }

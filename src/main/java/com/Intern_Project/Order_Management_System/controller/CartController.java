@@ -2,6 +2,7 @@ package com.Intern_Project.Order_Management_System.controller;
 
 import com.Intern_Project.Order_Management_System.service.CartService;
 import com.Intern_Project.Order_Management_System.model.Cart;
+import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,31 +28,31 @@ public class CartController {
     }
 
     @PostMapping()
-    ResponseEntity<String> postCart(@RequestBody Cart cart){
+    ResponseEntity<ResponseJson> postCart(@RequestBody Cart cart){
         cartService.insertCart(cart);
-        return new ResponseEntity("A new Product in a cart for Account Id "+cart.getAccountId()+" has been added",HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("A new Product in a cart for Account Id "+cart.getAccountId()+" has been added"),HttpStatus.CREATED);
     }
 
     @PutMapping()
-    ResponseEntity<String> updateCartById(@RequestBody Cart cart){
+    ResponseEntity<ResponseJson> updateCartById(@RequestBody Cart cart){
          cartService.updateCart(cart);
-         return new ResponseEntity("Cart with cart id "+cart.getId()+" has been updated",HttpStatus.ACCEPTED);
+         return new ResponseEntity<>(new ResponseJson("Cart with cart id "+cart.getCartId()+" has been updated"),HttpStatus.OK);
     }
 
     @DeleteMapping(value = URL_ID)
-    ResponseEntity<String> deleteCartById(@PathVariable(value="id") Integer id){
+    ResponseEntity<ResponseJson> deleteCartById(@PathVariable(value="id") Integer id){
         cartService.deleteByCartId(id);
-        return new ResponseEntity("Cart with cart id "+id+" has been deleted",HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("Cart with cart id "+id+" has been deleted"),HttpStatus.OK);
     }
 
     @DeleteMapping(value = URL_ACCOUNT_ID)
-    ResponseEntity<String> emptyCart( @PathVariable Integer id){
+    ResponseEntity<ResponseJson> emptyCart( @PathVariable Integer id){
         cartService.deleteByAccountId(id);
-        return new ResponseEntity("Cart of Account with Id "+id+" has been emptied", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ResponseJson("Cart of Account with Id "+id+" has been emptied"), HttpStatus.OK);
     }
 
     @PostMapping(value = URL_CART_CHECKOUT)
-    ResponseEntity<String> placeAnOrder(@PathVariable Integer id){
+    ResponseEntity<ResponseJson> placeAnOrder(@PathVariable Integer id){
         return cartService.cartCheckout(id);
     }
 }

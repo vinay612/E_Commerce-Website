@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Cart {
 
-    private int id;
+    private int cartId;
     private int accountId;
     private int productId;
     private int quantity;
