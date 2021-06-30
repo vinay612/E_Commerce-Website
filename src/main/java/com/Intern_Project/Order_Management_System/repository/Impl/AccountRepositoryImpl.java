@@ -3,6 +3,7 @@ package com.Intern_Project.Order_Management_System.repository.Impl;
 import com.Intern_Project.Order_Management_System.exception.AccountNotFoundException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
+import com.Intern_Project.Order_Management_System.service.CartService;
 import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import com.Intern_Project.Order_Management_System.util.RowMapper.AccountRowMapper;
 import org.slf4j.Logger;
@@ -23,12 +24,14 @@ import java.util.List;
 public class AccountRepositoryImpl implements AccountRepository {
 
     @Autowired
+    private CartService cartService;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final Logger log= LoggerFactory.getLogger(this.getClass());
 
-    private static  long latestInsertedAccountId=0;
+    private static  int latestInsertedAccountId=0;
 
     //SQL Queries
     private static final String CREATE_TABLE_ACCOUNT="CREATE TABLE IF NOT EXISTS Account(account_id int IDENTITY primary key , first_name varchar(255), last_name  varchar(255) , user_name  varchar(255) , password    varchar(255) , address     varchar(255) , email_id    varchar(255) , phone_number varchar(255))";
@@ -56,8 +59,8 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .addValue(ApplicationConstants.PHONE_NUMBER, account.getPhoneNumber());
         this.namedParameterJdbcTemplate.update(INSERT_ACCOUNT, sqlParameterSource);
         latestInsertedAccountId++;
+        cartService.insertCart(latestInsertedAccountId);
         log.info("A new Account with Account Id {} has been created",latestInsertedAccountId);
-
     }
 
 

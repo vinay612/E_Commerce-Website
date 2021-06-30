@@ -1,6 +1,8 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
 import com.Intern_Project.Order_Management_System.model.Cart;
+import com.Intern_Project.Order_Management_System.model.CartItem;
+import com.Intern_Project.Order_Management_System.service.CartItemService;
 import com.Intern_Project.Order_Management_System.service.ProductService;
 import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import com.Intern_Project.Order_Management_System.util.RowMapper.CartRowMapper;
@@ -29,69 +31,58 @@ public class CartRepositoryImpl implements CartRepository {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    private ProductService productService;
+    private CartItemService cartItemService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 
 
     //SQL Queries
-    private static final String CREATE_TABLE="CREATE TABLE IF NOT EXISTS Cart (cart_id int IDENTITY(100,1) primary key,account_id int,product_id int,quantity int,total_price double,FOREIGN KEY(account_id) REFERENCES Account(account_id),FOREIGN KEY(product_id) REFERENCES Product(product_Id))";
-    private static final String INSERT_CART="Insert into Cart (account_id,product_id,quantity,total_price) values (:account_id,:product_id,:quantity,:total_price)";
-    private static final String SELECT_BY_ACCOUNT_ID="Select cart_id,account_id,product_id,quantity,total_price from Cart where account_id=:account_id";
-    private static final String UPDATE_CART="Update Cart set quantity=:quantity , total_price= :total_price where cart_id=:cart_id";
-    private static final String DELETE_CART_BY_ID="Delete from Cart where cart_id=:cart_id";
+    private static final String CREATE_TABLE_CART="CREATE TABLE IF NOT EXISTS Cart (cart_id int PRIMARY KEY,total_price double,FOREIGN KEY(cart_id) REFERENCES Account(account_id))";
+    private static final String INSERT_CART="Insert into Cart (cart_id,total_price) values (:cart_id,:total_price)";
+    private static final String SELECT_CART_BY_ID="Select cart_id,total_price from Cart where cart_id=:cart_id";
+    private static final String UPDATE_CART="Update Cart set total_price= :total_price where cart_id=:cart_id";
+    private static final String DELETE_CART="Delete from Cart where cart_id=:cart_id";
+
     public void createTable(){
-        this.jdbcTemplate.update(CREATE_TABLE);
+        this.jdbcTemplate.update(CREATE_TABLE_CART);
         log.info("Cart Table has been created");
     }
 
-    public void insertCart(Cart cart){
+    public void insertCart(Integer id){
 
-        double price = productService.getProductById(cart.getProductId()).getPrice();
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue(ApplicationConstants.ACCOUNT_ID,cart.getAccountId())
-                .addValue(ApplicationConstants.PRODUCT_ID,cart.getProductId())
-                .addValue(ApplicationConstants.QUANTITY,cart.getQuantity())
-                .addValue(ApplicationConstants.TOTAL_PRICE,cart.getQuantity()*price);
+                .addValue(ApplicationConstants.CART_ID,id)
+                .addValue(ApplicationConstants.TOTAL_PRICE,0);
 
-        int count=this.namedParameterJdbcTemplate.update(INSERT_CART,sqlParameterSource);
-        log.info("Number of Rows inserted in cart Table is : {}",count);
+        this.namedParameterJdbcTemplate.update(INSERT_CART,sqlParameterSource);
+        log.info("Cart for Account Id {} inserted in cart Table ",id);
     }
 
-    public List<Cart> findCartByAccountId(Integer id){
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue(ApplicationConstants.ACCOUNT_ID,id);
-        return this.namedParameterJdbcTemplate.query(SELECT_BY_ACCOUNT_ID,sqlParameterSource,CartRowMapper.INSTANCE);
+    public Cart getCartById(Integer id){
 
-    }
-
-    public void updateCartById(@NotNull Cart cart){
-
-        double price = productService.getProductById(cart.getProductId()).getPrice();
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
-                .addValue(ApplicationConstants.CART_ID,cart.getCartId())
-                .addValue(ApplicationConstants.QUANTITY,cart.getQuantity())
-                .addValue(ApplicationConstants.TOTAL_PRICE,price*cart.getQuantity());
-
-        this.namedParameterJdbcTemplate.update(UPDATE_CART,sqlParameterSource);
-        log.info("Cart with id : {} has been updated",cart.getCartId());
-    }
-
-    public void deleteCartByCartId(Integer id){
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue(ApplicationConstants.CART_ID,id);
-        this.namedParameterJdbcTemplate.update(DELETE_CART_BY_ID,sqlParameterSource);
-        log.info("Cart with id {} has been deleted",id);
+        log.info("Cart for Account Id {} is returned from cart Table ",id);
+        return this.namedParameterJdbcTemplate.queryForObject(SELECT_CART_BY_ID,sqlParameterSource,CartRowMapper.INSTANCE);
+    }
+    public void updateCartById(int cartId){
+
+        List<CartItem> cartItemList=cartItemService.findByAccountId(cartId);
+        double totalPrice=cartItemList.stream().mapToDouble(CartItem::getTotalPrice).sum();
+
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
+                .addValue(ApplicationConstants.CART_ID,cartId)
+                .addValue(ApplicationConstants.TOTAL_PRICE,totalPrice);
+
+        this.namedParameterJdbcTemplate.update(UPDATE_CART,sqlParameterSource);
+        log.info("Cart with id : {} has been updated",cartId);
     }
 
-    public void deleteCartByAccountId(List<Cart> cartList){
-
-        log.info("Cart of Account with ID {} has been made empty",cartList.get(0).getAccountId());
-        MapSqlParameterSource[] mapSqlParameterSource=cartList.stream()
-                .map(cart -> new MapSqlParameterSource()
-                        .addValue(ApplicationConstants.CART_ID,cart.getCartId()))
-                .collect(Collectors.toList()).toArray(new MapSqlParameterSource[]{});
-        this.namedParameterJdbcTemplate.batchUpdate(DELETE_CART_BY_ID,mapSqlParameterSource);
+    public void deleteCartById(Integer id){
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
+                .addValue(ApplicationConstants.CART_ID,id);
+        this.namedParameterJdbcTemplate.update(DELETE_CART,sqlParameterSource);
+        log.info("Cart with id : {} has been deleted",id);
     }
 }

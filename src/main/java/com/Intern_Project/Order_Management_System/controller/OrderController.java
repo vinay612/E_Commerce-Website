@@ -45,6 +45,6 @@ public class OrderController {
     @DeleteMapping(value=URL_ORDER_ID)
     ResponseEntity<ResponseJson> deleteOrder(@PathVariable int id){
         orderService.deleteOrder(id);
-        return new ResponseEntity<>(new ResponseJson("Order with order id "+id+" has been cancelled."),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseJson("Order with order id "+id+" has been deleted."),HttpStatus.OK);
     }
 }

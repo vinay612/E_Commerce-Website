@@ -22,7 +22,7 @@ public class Account {
     private String address;
     @Email(message = "EmailId is not valid")
     private String emailId;
-    @Range(message = "Phone Number must be only numeric with 10 digits",min = 100000000)
+    @Range(message = "Phone Number must be only numeric with 10 digits",min = 1000000000)
     @Digits(integer = 10,fraction = 0,message = "Phone Number must be only numeric with 10 digits")
     private long phoneNumber;
 

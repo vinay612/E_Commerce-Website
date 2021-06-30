@@ -38,7 +38,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final String GET_ALL_PRODUCTS="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product";
     private static final String GET_PRODUCT_BY_ID="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where product_Id=:product_Id";
     private static final String GET_PRODUCT_BY_NAME="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
-    private static final String BATCH_INSERT="INSERT INTO PRODUCT(NAME,PRICE,DESCRIPTION,EXPIRY_DATE,MIN_QUANTITY) VALUES (?,?,?,?,?)";
     private static final String UPDATE_PRODUCT="UPDATE Product set price=:price where product_Id=:product_Id";
 
     @Override

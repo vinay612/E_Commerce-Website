@@ -1,25 +1,17 @@
 package com.Intern_Project.Order_Management_System.service;
 
-import com.Intern_Project.Order_Management_System.model.Cart;
-import com.Intern_Project.Order_Management_System.util.ResponseJson;
-import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import com.Intern_Project.Order_Management_System.model.Cart;
 
 public interface CartService {
 
     void createTable();
 
-    void insertCart(Cart cart);
+    void insertCart(Integer id);
 
-    ResponseEntity<ResponseJson> cartCheckout(Integer id);
+    Cart getCartByCartId(Integer id);
+    void updateCart(Integer id);
 
-    List<Cart> findByAccountId(Integer id);
-
-    void deleteByCartId(Integer id);
-
-    void deleteByAccountId(Integer id);
-
-    void updateCart(Cart cart);
+    void deleteCartById(Integer id);
 
 }

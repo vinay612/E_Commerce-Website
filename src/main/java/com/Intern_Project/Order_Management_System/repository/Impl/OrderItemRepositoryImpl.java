@@ -27,7 +27,7 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate=new NamedParameterJdbcTemplate(new JdbcTemplate());
 
-    private Logger log= LoggerFactory.getLogger(this.getClass());
+    private final Logger log= LoggerFactory.getLogger(this.getClass());
 
     private static final String CREATE_TABLE="CREATE Table IF NOT EXISTS OrderItem (item_Id int IDENTITY(100,1) PRIMARY KEY,order_Id int,product_Id int,quantity int,price double,FOREIGN KEY(order_Id) references Orders(order_Id),FOREIGN KEY(product_Id) references Product(product_Id))";
     private static final String INSERT_ORDER_ITEM="INSERT INTO OrderItem(order_Id,product_Id,quantity,price) VALUES(:order_Id,:product_Id,:quantity,:price)";

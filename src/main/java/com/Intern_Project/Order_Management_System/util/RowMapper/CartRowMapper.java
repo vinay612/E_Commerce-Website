@@ -14,9 +14,6 @@ public enum CartRowMapper implements RowMapper<Cart> {
     public Cart mapRow(ResultSet resultSet, int i) throws SQLException {
         Cart cart=new Cart();
         cart.setCartId(resultSet.getInt(ApplicationConstants.CART_ID));
-        cart.setAccountId(resultSet.getInt(ApplicationConstants.ACCOUNT_ID));
-        cart.setProductId(resultSet.getInt(ApplicationConstants.PRODUCT_ID));
-        cart.setQuantity(resultSet.getInt(ApplicationConstants.QUANTITY));
         cart.setTotalPrice(resultSet.getDouble(ApplicationConstants.TOTAL_PRICE));
         return cart;
     }

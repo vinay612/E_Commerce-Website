@@ -67,12 +67,12 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     ResponseEntity<ResponseJson> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception){
-        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseJson("Entity Not Found"),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseJson> handleException(Exception exception) {
-        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ResponseJson("Entity not Found"),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

@@ -8,9 +8,6 @@ import lombok.RequiredArgsConstructor;
 public class Cart {
 
     private int cartId;
-    private int accountId;
-    private int productId;
-    private int quantity;
     private double totalPrice;
 
 }

@@ -13,6 +13,7 @@ public class ApplicationConstants {
     public static final String QUANTITY="quantity";
     public static final String TOTAL_PRICE="total_price";
     public static final String CART_ID="cart_id";
+    public static final String CART_ITEM_ID="item_id";
     public static final String ORDER_ID="order_Id";
     public static final String USER_ID="user_Id";
     public static final String PURCHASE_DATE="purchase_Date";

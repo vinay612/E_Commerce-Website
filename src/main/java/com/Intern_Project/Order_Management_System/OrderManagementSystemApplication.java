@@ -23,6 +23,9 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 	@Autowired
 	private OrderItemService orderItemService;
 
+	@Autowired
+	private CartItemService cartItemService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(OrderManagementSystemApplication.class, args);
 
@@ -33,6 +36,7 @@ public class OrderManagementSystemApplication implements CommandLineRunner {
 		accountService.createTable();
 		productService.createTable();
 		cartService.createTable();
+		cartItemService.createTable();
 		orderService.createTable();
 		orderItemService.createTable();
 
