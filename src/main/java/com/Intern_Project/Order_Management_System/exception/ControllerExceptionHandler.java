@@ -35,19 +35,19 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<ResponseJson> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception){
-        return new ResponseEntity<>(new ResponseJson(exception.getLocalizedMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseJson("Http Error"),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidFormatException.class)
     ResponseEntity<ResponseJson> handleInvalidFormatException(InvalidFormatException exception){
-        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseJson("Invalid Format"),HttpStatus.BAD_REQUEST);
     }
 
 
 
     @ExceptionHandler(ValidationException.class)
     ResponseEntity<ResponseJson> handleValidationException(ValidationException exception){
-        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseJson("Input Data is not valid"),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccountExistsException.class)
@@ -55,14 +55,14 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AccountNotFoundException.class)
-    ResponseEntity<ResponseJson> handleAccountNotFoundException(AccountNotFoundException exception){
+    @ExceptionHandler(AccountNotExistException.class)
+    ResponseEntity<ResponseJson> handleAccountNotExistException(AccountNotExistException exception){
         return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<ResponseJson> handleDataIntegrityViolationException(DataIntegrityViolationException exception){
-        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseJson("Entity Not Found"),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)

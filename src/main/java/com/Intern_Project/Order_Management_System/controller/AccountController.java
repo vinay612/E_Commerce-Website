@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.controller;
 
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.service.AccountService;
 import com.Intern_Project.Order_Management_System.service.CartItemService;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class AccountController {
     }
 
     @GetMapping(value=URL_LOGIN)
-    ResponseEntity<ResponseJson> authenticateUserCredentials(@RequestParam String userName,@RequestParam String password) throws AccountNotFoundException {
+    ResponseEntity<ResponseJson> authenticateUserCredentials(@RequestParam String userName,@RequestParam String password) {
         return accountService.validateAuthentication(userName,password);
     }
     @GetMapping()
@@ -51,12 +51,12 @@ public class AccountController {
     }
 
     @GetMapping(value=URL_ID)
-    Account getAccountById(@PathVariable(value="id") Integer id)  throws AccountNotFoundException {
+    Account getAccountById(@PathVariable(value="id") Integer id) {
         return accountService.findById(id);
     }
 
     @PutMapping()
-    ResponseEntity<ResponseJson> updateAccountById(@Valid @RequestBody Account account) throws AccountNotFoundException{
+    ResponseEntity<ResponseJson> updateAccountById(@Valid @RequestBody Account account) throws AccountNotExistException {
              accountService.updateAccount(account);
              return new ResponseEntity<>(new ResponseJson("Account details with Account Id "+account.getAccountId()+"  has been updated"),HttpStatus.OK);
     }

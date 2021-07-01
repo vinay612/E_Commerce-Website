@@ -1,6 +1,6 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
-import com.Intern_Project.Order_Management_System.exception.AccountNotFoundException;
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.service.CartService;
@@ -84,7 +84,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         return account;
     }
 
-    public void updateAccount(Account account){
+    public int updateAccount(Account account) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue(ApplicationConstants.ACCOUNT_ID,account.getAccountId())
                 .addValue(ApplicationConstants.FIRST_NAME, account.getFirstName())
@@ -94,25 +94,15 @@ public class AccountRepositoryImpl implements AccountRepository {
                 .addValue(ApplicationConstants.ADDRESS, account.getAddress())
                 .addValue(ApplicationConstants.EMAIL_ID, account.getEmailId())
                 .addValue(ApplicationConstants.PHONE_NUMBER, account.getPhoneNumber());
-        int rowUpdated=this.namedParameterJdbcTemplate.update(UPDATE_ACCOUNT,sqlParameterSource);
-        if(rowUpdated==0){
-            log.info("Account with Account Id {} is not present",account.getAccountId());
-            throw new AccountNotFoundException("Account with given Account Id is not present");
-        }
-        log.info("Account with Account Id {} has been updated",account.getAccountId());
+        return this.namedParameterJdbcTemplate.update(UPDATE_ACCOUNT,sqlParameterSource);
+
 
     }
 
-    public void deleteAccountById(Integer id){
+    public int deleteAccountById(Integer id) throws AccountNotExistException {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue(ApplicationConstants.ACCOUNT_ID,id);
-        int rowsDeleted=this.namedParameterJdbcTemplate.update(DELETE_ACCOUNT,sqlParameterSource);
-        if(rowsDeleted==0){
-            log.info("No Account with Account Id {} is found",id);
-            throw new AccountNotFoundException("No Account with Given Account Id is found");
-        }
-        log.info("Account with Account Id {} has been Deleted", id);
-
+        return this.namedParameterJdbcTemplate.update(DELETE_ACCOUNT,sqlParameterSource);
     }
 
 

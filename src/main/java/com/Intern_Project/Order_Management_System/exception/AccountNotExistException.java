@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AccountNotFoundException extends RuntimeException {
+public class AccountNotExistException extends RuntimeException {
     private String message;
 
 }

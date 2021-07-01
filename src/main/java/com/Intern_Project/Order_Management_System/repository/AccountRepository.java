@@ -10,8 +10,8 @@ public interface AccountRepository {
     void createTable();
     void insertAccount(Account account);
     List<Account> findAllAccounts();
-    Account findByAccountId(Integer id) throws AccountNotFoundException;
-    void updateAccount(Account account);
-    void deleteAccountById(Integer id);
+    Account findByAccountId(Integer id);
+    int updateAccount(Account account);
+    int deleteAccountById(Integer id);
 
 }

@@ -1,6 +1,7 @@
 package com.Intern_Project.Order_Management_System.service.Impl;
 
 import com.Intern_Project.Order_Management_System.exception.AccountExistsException;
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.service.AccountService;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @Service("accountService")
@@ -46,30 +46,42 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.insertAccount(account);
     }
 
-    public ResponseEntity<ResponseJson> validateAuthentication(String userName, String password) throws AccountNotFoundException {
+    public ResponseEntity<ResponseJson> validateAuthentication(String userName, String password) throws AccountNotExistException {
         List<Account> accounts=accountRepository.findAllAccounts();
-        for(Account account : accounts){
-            if(account.getUserName().equalsIgnoreCase(userName) && account.getPassword().equals(password))
+        for(Account account : accounts) {
+            log.info("Account username  {}", account.getUserName());
+            if (account.getUserName().equalsIgnoreCase(userName) && account.getPassword().equals(password)) {
                 log.info("Account Credentials has been Authenticated.Log in Approved");
                 return new ResponseEntity<>(new ResponseJson("Account Credentials has been Authenticated.Log in Approved"), HttpStatus.OK);
+            }
         }
         log.info("UserName {} or Password {} is/are incorrect",userName,password);
-        throw new AccountNotFoundException("User Name OR Password is/are incorrect");
+        throw new AccountNotExistException("User Name OR Password is/are incorrect");
     }
 
     public List<Account> findAllAccounts(){
         return accountRepository.findAllAccounts();
     }
 
-    public Account findById(Integer id)  throws AccountNotFoundException {
+    public Account findById(Integer id){
         return accountRepository.findByAccountId(id);
     }
 
-    public void updateAccount(Account account) throws AccountNotFoundException {
-        accountRepository.updateAccount(account);
+    public void updateAccount(Account account) throws AccountNotExistException {
+        int rowUpdated= accountRepository.updateAccount(account);
+        if(rowUpdated==0){
+            log.info("Account with Account Id {} is not present",account.getAccountId());
+            throw new AccountNotExistException("Account with given Account Id is not present");
+        }
+        log.info("Account with Account Id {} has been updated",account.getAccountId());
     }
 
-    public void deleteAccount(Integer id){
-        accountRepository.deleteAccountById(id);
+    public void deleteAccount(Integer id) throws AccountNotExistException {
+        int rowsDeleted=accountRepository.deleteAccountById(id);
+        if(rowsDeleted==0){
+            log.info("No Account with Account Id {} is found",id);
+            throw new AccountNotExistException("No Account with Given Account Id is found");
+        }
+        log.info("Account with Account Id {} has been Deleted", id);
     }
 }
