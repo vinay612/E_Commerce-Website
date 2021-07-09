@@ -20,9 +20,6 @@ public interface OrderRepository {
     //get order by order id
     List<OrderItem> findOrderById(int id);
 
-
-    Order findMaximumOrderIdForAccountId(Integer id);
-
     //delete Order
     void deleteOrder(int id);
 }

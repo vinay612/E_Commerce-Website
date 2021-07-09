@@ -20,12 +20,6 @@ public class OrderController {
     private static final String URL_ORDER_ID="{id}";
     private static final String URL_USER_ID="accountId/{id}";
 
-    @PostMapping()
-    ResponseEntity<ResponseJson> createOrder(@RequestBody Order order){
-        orderService.addOrder(order);
-        return new ResponseEntity<>(new ResponseJson("A new order has been placed"), HttpStatus.CREATED);
-    }
-
     @GetMapping()
     List<Order> getAllOrderDetails()
     {

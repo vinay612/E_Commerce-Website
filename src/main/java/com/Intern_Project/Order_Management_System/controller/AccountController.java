@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/account")
+@CrossOrigin(origins = "*")
 public class AccountController {
 
     @Autowired

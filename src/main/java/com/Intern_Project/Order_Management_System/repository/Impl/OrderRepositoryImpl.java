@@ -37,9 +37,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String GET_ORDER_DETAILS_BY_USER_ID="SELECT order_Id,user_Id,purchase_Date,purchase_Time,total_Price FROM Orders WHERE user_Id=:user_Id";
     private static final String GET_ORDER_DETAILS_BY_ORDER_ID="SELECT item_Id,order_Id,product_Id,quantity,price FROM OrderItem WHERE order_Id=:order_Id";
     private static final String DELETE_ORDER="DELETE FROM Orders WHERE order_Id=:order_Id";
-    private static final String MAX_ORDER_ID_FOR_ACCOUNT_ID="Select * from Orders where user_id=:user_id ORDER BY order_id DESC LIMIT 1";
 
-    // Creating table Product
     public void createTable()
     {
         this.jdbcTemplate.update(CREATE_TABLE);
@@ -62,7 +60,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void insertOrder(Order order) {
         MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue(ApplicationConstants.USER_ID,order.getUserId()) //todo
+        mapSqlParameterSource.addValue(ApplicationConstants.USER_ID,order.getUserId())
                 .addValue(ApplicationConstants.PURCHASE_DATE,order.getPurchaseDate())
                 .addValue(ApplicationConstants.PURCHASE_TIME,order.getPurchaseTime())
                 .addValue(ApplicationConstants.ORDER_TOTAL_PRICE,order.getTotalPrice());
@@ -83,11 +81,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
         namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
         log.info("Order with order id {} has been deleted.",id);
-    }
-
-    public Order findMaximumOrderIdForAccountId(Integer id){
-        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.USER_ID,id);
-        return namedParameterJdbcTemplate.queryForObject(MAX_ORDER_ID_FOR_ACCOUNT_ID,sqlParameterSource,OrderRowMapper.INSTANCE);
     }
 
 

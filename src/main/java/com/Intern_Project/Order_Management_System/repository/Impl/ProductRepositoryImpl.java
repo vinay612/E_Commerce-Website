@@ -48,20 +48,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void insertProduct(Product product) {
-        MapSqlParameterSource mapSqlParameterSource=new MapSqlParameterSource();
-        mapSqlParameterSource.addValue(ApplicationConstants.NAME,product.getName())
-                .addValue(ApplicationConstants.PRICE,product.getPrice())
-                .addValue(ApplicationConstants.DESCRIPTION,product.getDescription())
-                .addValue(ApplicationConstants.EXPIRY_DATE,product.getExpiryDate())
-                .addValue(ApplicationConstants.MIN_QUANTITY,product.getMinQuantity());
-        namedParameterJdbcTemplate.update(INSERT_PRODUCT,mapSqlParameterSource);
-        log.info("A new product has been added.");
-
-    }
-
-    @Override
-    public List<Product> findAllproducts() {
+    public List<Product> findAllProducts() {
         return namedParameterJdbcTemplate.query(GET_ALL_PRODUCTS, ProductRowMapper.INSTANCE);
 
     }
