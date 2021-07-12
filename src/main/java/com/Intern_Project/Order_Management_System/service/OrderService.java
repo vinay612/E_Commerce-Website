@@ -12,9 +12,6 @@ public interface OrderService {
     // add a new Order.
     void addOrder(Order order);
 
-    //finds maximum orderId for a Account
-    public Order findMaxOrderIdForAccountId(Integer id);
-
     // get all the Orders.
     List<Order> getAllOrderDetails();
 

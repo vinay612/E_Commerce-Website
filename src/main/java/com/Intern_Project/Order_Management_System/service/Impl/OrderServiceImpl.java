@@ -30,10 +30,6 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.insertOrder(order);
     }
 
-    public Order findMaxOrderIdForAccountId(Integer id){
-        return orderRepository.findMaximumOrderIdForAccountId(id);
-    }
-
     @Override
     public List<Order> getAllOrderDetails() {
         return orderRepository.findAllOrders();

@@ -8,9 +8,6 @@ public interface ProductService {
     //create Table
     void createTable();
 
-    // add a new Product.
-    void addProduct(Product product);
-
     // get a list of all Products.
     List<Product> getAllProducts();
 

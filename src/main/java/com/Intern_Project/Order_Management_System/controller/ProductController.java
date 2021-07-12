@@ -13,21 +13,15 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    private static final String URL_ADD_PRODUCT="/product";
     private static final String URL_PRODUCT_ID="{id}";
     private static final String URL_PRODUCT_NAME="/productName/{name}";
 
-    @PostMapping(value=URL_ADD_PRODUCT)
-    ResponseEntity<ResponseJson> insertProduct(@RequestBody Product product)
-    {
-         productService.addProduct(product);
-         return new ResponseEntity<>(new ResponseJson("Product has been added successfully"),HttpStatus.CREATED);
-    }
 
     @GetMapping()
     List<Product> getAllProducts()
