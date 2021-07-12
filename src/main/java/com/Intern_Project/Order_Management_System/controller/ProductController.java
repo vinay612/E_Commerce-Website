@@ -10,6 +10,7 @@ import com.Intern_Project.Order_Management_System.service.ProductService;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/products")
 public class ProductController {

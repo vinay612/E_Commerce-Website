@@ -5,6 +5,9 @@ import com.Intern_Project.Order_Management_System.exception.AccountNotExistExcep
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.service.AccountService;
+import com.Intern_Project.Order_Management_System.service.CartItemService;
+import com.Intern_Project.Order_Management_System.service.CartService;
+import com.Intern_Project.Order_Management_System.service.OrderService;
 import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private CartItemService cartItemService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private OrderService orderService;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     public void createTable(){
@@ -77,11 +89,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public void deleteAccount(Integer id) throws AccountNotExistException {
-        int rowsDeleted=accountRepository.deleteAccountById(id);
-        if(rowsDeleted==0){
-            log.info("No Account with Account Id {} is found",id);
+        int rowsDeleted;
+        try {
+            orderService.deleteOrder(id);
+            cartItemService.deleteByAccountId(id);
+            cartService.deleteCartById(id);
+        }
+        catch(IndexOutOfBoundsException exception){
+            log.info("Cart for Account Id {} is empty ",id);
+        }
+        finally {
+             rowsDeleted = accountRepository.deleteAccountById(id);
+        }
+        if (rowsDeleted == 0) {
+            log.info("No Account with Account Id {} is found", id);
             throw new AccountNotExistException("No Account with Given Account Id is found");
         }
         log.info("Account with Account Id {} has been Deleted", id);
+
     }
 }

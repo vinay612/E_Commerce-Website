@@ -3,8 +3,6 @@ package com.Intern_Project.Order_Management_System.controller;
 import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Account;
 import com.Intern_Project.Order_Management_System.service.AccountService;
-import com.Intern_Project.Order_Management_System.service.CartItemService;
-import com.Intern_Project.Order_Management_System.service.CartService;
 import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/account")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
-    @Autowired
-    private CartItemService cartItemService;
-
-    @Autowired
-    private CartService cartService;
 
     Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -63,16 +56,8 @@ public class AccountController {
 
     @DeleteMapping(value = URL_ID)
     ResponseEntity<ResponseJson> deleteAccountById(@PathVariable Integer id){
-        try {
-            cartItemService.deleteByAccountId(id);
-            cartService.deleteCartById(id);
-        }
-        catch(IndexOutOfBoundsException exception){
-            log.info("Cart for Account Id {} is empty ",id);
-        }
-        finally{
+
             accountService.deleteAccount(id);
-        }
         return new ResponseEntity<>(new ResponseJson("Account  with Account Id "+id+"  has been deleted"),HttpStatus.OK);
     }
 }

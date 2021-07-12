@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -24,11 +25,11 @@ public class CartController {
 
     private static final String URL_CART_CHECKOUT="/{id}/checkout";
     private static final String URL_ID="{id}";
-    private static final String URL_PRICE_ID="/price/{id}";
+    private static final String URL_PRICE_ID="/{id}/price";
     private static final String URL_ACCOUNT_ID="/account/{id}";
 
     @GetMapping(value = URL_PRICE_ID)
-    Cart getCartByCartId(@PathVariable Integer id){
+    Cart getCartTotalPriceByCartId(@PathVariable Integer id){
         return cartService.getCartByCartId(id);
     }
 
