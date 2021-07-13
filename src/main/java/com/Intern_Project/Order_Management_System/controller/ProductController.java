@@ -52,4 +52,10 @@ public class ProductController {
         productService.updateProduct(product);
         return new ResponseEntity<>(new ResponseJson("Product with product id "+product.getProductId()+" has been updated."),HttpStatus.OK);
     }
+
+    @DeleteMapping(value=URL_PRODUCT_ID)
+    ResponseEntity<ResponseJson> deleteProduct(@PathVariable("id") int id){
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(new ResponseJson("Product with product id "+id+" has been deleted."),HttpStatus.OK);
+    }
 }

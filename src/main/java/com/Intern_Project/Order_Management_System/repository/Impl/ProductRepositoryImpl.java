@@ -39,6 +39,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final String GET_PRODUCT_BY_ID="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where product_Id=:product_Id";
     private static final String GET_PRODUCT_BY_NAME="SELECT product_Id,name,price,description,expiry_Date,min_Quantity from Product where name=:name";
     private static final String UPDATE_PRODUCT="UPDATE Product set name=:name,price=:price,description=:description,expiry_Date=:expiry_Date,min_Quantity=:min_Quantity where product_Id=:product_Id";
+    private static final String DELETE_PRODUCT="DELETE FROM Product WHERE product_Id=:product_Id";
 
     @Override
     public void createTable()
@@ -90,5 +91,12 @@ public class ProductRepositoryImpl implements ProductRepository {
         this.namedParameterJdbcTemplate.update(UPDATE_PRODUCT,sqlParameterSource);
         log.info("Product with product id {} has been updated",product.getProductId());
 
+    }
+
+    @Override
+    public void deleteByProductId(int id) {
+        SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.PRODUCT_PRODUCTID,id);
+        this.namedParameterJdbcTemplate.update(DELETE_PRODUCT,sqlParameterSource);
+        log.info("Product with product id {} has been deleted ",id);
     }
 }
