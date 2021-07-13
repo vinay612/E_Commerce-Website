@@ -1,13 +1,11 @@
 package com.Intern_Project.Order_Management_System.service.Impl;
 
+import com.Intern_Project.Order_Management_System.exception.ProductQuantityException;
 import com.Intern_Project.Order_Management_System.model.CartItem;
 import com.Intern_Project.Order_Management_System.model.Order;
 import com.Intern_Project.Order_Management_System.model.OrderItem;
 import com.Intern_Project.Order_Management_System.repository.CartItemRepository;
-import com.Intern_Project.Order_Management_System.service.CartItemService;
-import com.Intern_Project.Order_Management_System.service.CartService;
-import com.Intern_Project.Order_Management_System.service.OrderItemService;
-import com.Intern_Project.Order_Management_System.service.OrderService;
+import com.Intern_Project.Order_Management_System.service.*;
 import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +33,9 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private OrderItemService orderItemService;
 
+    @Autowired
+    private ProductService productService;
+
     public static int orderId=99;
 
     @Override
@@ -43,7 +44,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void insertCartItem(CartItem cartItem){
+    public void insertCartItem(CartItem cartItem) throws ProductQuantityException {
         List<CartItem> cartItemList=cartItemRepository.findCartItemsByCartId(cartItem.getCartId());
         int counter=0;
         for(CartItem cartItem1: cartItemList){
@@ -55,8 +56,12 @@ public class CartItemServiceImpl implements CartItemService {
                 break;
             }
         }
-        if(counter==0)
+        if(counter==0) {
+            int minQuantity=productService.getProductById(cartItem.getProductId()).getMinQuantity();
+            if(minQuantity>cartItem.getQuantity())
+                throw new ProductQuantityException("Ordered Quantity of this Product cannot be less than "+ minQuantity);
             cartItemRepository.insertCartItem(cartItem);
+        }
     }
 
     @Override

@@ -15,7 +15,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,6 +67,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EmptyResultDataAccessException.class)
     ResponseEntity<ResponseJson> handleEmptyResultDataAccessException(EmptyResultDataAccessException exception){
         return new ResponseEntity<>(new ResponseJson("Entity Not Found"),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProductQuantityException.class)
+    public ResponseEntity<ResponseJson> handleProductQuantityException(ProductQuantityException exception) {
+        return new ResponseEntity<>(new ResponseJson(exception.getMessage()),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

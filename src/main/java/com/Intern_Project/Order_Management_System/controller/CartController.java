@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.controller;
 
+import com.Intern_Project.Order_Management_System.exception.ProductQuantityException;
 import com.Intern_Project.Order_Management_System.model.Cart;
 import com.Intern_Project.Order_Management_System.model.CartItem;
 import com.Intern_Project.Order_Management_System.service.CartItemService;
@@ -39,7 +40,7 @@ public class CartController {
     }
 
     @PostMapping()
-    ResponseEntity<ResponseJson> addCartItem(@RequestBody CartItem cartItem){
+    ResponseEntity<ResponseJson> addCartItem(@RequestBody CartItem cartItem) throws ProductQuantityException {
         cartItemService.insertCartItem(cartItem);
         return new ResponseEntity<>(new ResponseJson("A new Product in a cart for Account Id "+cartItem.getCartId()+" has been added"),HttpStatus.CREATED);
     }

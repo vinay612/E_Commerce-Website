@@ -3,6 +3,7 @@ package com.Intern_Project.Order_Management_System.service.Impl;
 import com.Intern_Project.Order_Management_System.exception.AccountExistsException;
 import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Account;
+import com.Intern_Project.Order_Management_System.model.Order;
 import com.Intern_Project.Order_Management_System.repository.AccountRepository;
 import com.Intern_Project.Order_Management_System.service.AccountService;
 import com.Intern_Project.Order_Management_System.service.CartItemService;
@@ -91,7 +92,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(Integer id) throws AccountNotExistException {
         int rowsDeleted;
         try {
-            orderService.deleteOrder(id);
+            orderService.getOrderDetailsByUserId(id).stream().map(Order::getOrderId).forEach(orderId -> orderService.deleteOrder(orderId));
             cartItemService.deleteByAccountId(id);
             cartService.deleteCartById(id);
         }

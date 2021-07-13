@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.service;
 
+import com.Intern_Project.Order_Management_System.exception.ProductQuantityException;
 import com.Intern_Project.Order_Management_System.model.CartItem;
 import com.Intern_Project.Order_Management_System.util.ResponseJson;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface CartItemService {
     void createTable();
 
-    void insertCartItem(CartItem cartItem);
+    void insertCartItem(CartItem cartItem) throws ProductQuantityException;
 
     List<CartItem> findByAccountId(Integer id);
 

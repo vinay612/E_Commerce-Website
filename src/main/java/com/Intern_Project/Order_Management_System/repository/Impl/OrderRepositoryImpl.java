@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.repository.OrderRepository;
 import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,6 @@ import com.Intern_Project.Order_Management_System.util.RowMapper.OrderRowMapper;
 import com.Intern_Project.Order_Management_System.util.RowMapper.OrderItemRowMapper;
 import com.Intern_Project.Order_Management_System.model.OrderItem;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -79,7 +79,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public void deleteOrder(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
-        namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
+        int rowUpdated=namedParameterJdbcTemplate.update(DELETE_ORDER,sqlParameterSource);
+        if(rowUpdated == 0)
+            throw new AccountNotExistException("Order with id "+ id + " does not exist");
         log.info("Order with order id {} has been deleted.",id);
     }
 

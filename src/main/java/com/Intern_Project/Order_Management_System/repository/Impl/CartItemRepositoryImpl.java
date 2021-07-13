@@ -67,7 +67,7 @@ public class CartItemRepositoryImpl implements CartItemRepository {
                 .addValue(ApplicationConstants.TOTAL_PRICE,totalPrice);
 
         this.namedParameterJdbcTemplate.update(INSERT_CART,sqlParameterSource);
-        log.info("CartItem Row inserted in cartItem Table ");
+        log.info("Product inserted in Account's {} cart ",cartItem.getCartId());
 
         //Updating Total Price in Cart
         cartService.updateCart(cartItem.getCartId());
@@ -75,7 +75,6 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
     @Override
     public List<CartItem> findCartItemsByCartId(Integer id){
-        log.info("{}  ",id);
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue(ApplicationConstants.CART_ID,id);
         return this.namedParameterJdbcTemplate.query(SELECT_BY_CART_ID,sqlParameterSource, CartItemRowMapper.INSTANCE);
