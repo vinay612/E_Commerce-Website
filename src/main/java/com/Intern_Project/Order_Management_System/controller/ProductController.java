@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping(value=URL_PRODUCT_ID)
-    Product getProductDetailsById(@PathVariable("id") int id)
+    Product getProductDetailsByProductId(@PathVariable("id") int id)
     {
         return productService.getProductById(id);
     }
@@ -41,20 +41,20 @@ public class ProductController {
     }
 
     @PostMapping()
-    ResponseEntity<ResponseJson> insertMultipleProducts(@RequestBody List<Product> products){
+    ResponseEntity<ResponseJson> insertProducts(@RequestBody List<Product> products){
         productService.addBatch(products);
         return new ResponseEntity<>(new ResponseJson("Products have been successfully added"),HttpStatus.CREATED);
     }
 
     @PutMapping()
-    ResponseEntity<ResponseJson> updateProductByProductId(@RequestBody Product product)
+    ResponseEntity<ResponseJson> updateProductDetails(@RequestBody Product product)
     {
         productService.updateProduct(product);
         return new ResponseEntity<>(new ResponseJson("Product with product id "+product.getProductId()+" has been updated."),HttpStatus.OK);
     }
 
     @DeleteMapping(value=URL_PRODUCT_ID)
-    ResponseEntity<ResponseJson> deleteProduct(@PathVariable("id") int id){
+    ResponseEntity<ResponseJson> deleteProductByProductId(@PathVariable("id") int id){
         productService.deleteProduct(id);
         return new ResponseEntity<>(new ResponseJson("Product with product id "+id+" has been deleted."),HttpStatus.OK);
     }

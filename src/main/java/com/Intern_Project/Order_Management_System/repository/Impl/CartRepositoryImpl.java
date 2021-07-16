@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Cart;
 import com.Intern_Project.Order_Management_System.model.CartItem;
 import com.Intern_Project.Order_Management_System.service.CartItemService;
@@ -82,7 +83,9 @@ public class CartRepositoryImpl implements CartRepository {
     public void deleteCartById(Integer id){
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource()
                 .addValue(ApplicationConstants.CART_ID,id);
-        this.namedParameterJdbcTemplate.update(DELETE_CART,sqlParameterSource);
+        int rowUpdated=this.namedParameterJdbcTemplate.update(DELETE_CART,sqlParameterSource);
+        if(rowUpdated == 0)
+            throw new AccountNotExistException("Cart with id "+ id + " does not exist");
         log.info("Cart with id : {} has been deleted",id);
     }
 }

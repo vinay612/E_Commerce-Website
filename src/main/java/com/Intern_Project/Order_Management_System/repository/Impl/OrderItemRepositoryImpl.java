@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.model.Order;
 import com.Intern_Project.Order_Management_System.model.OrderItem;
 import com.Intern_Project.Order_Management_System.repository.OrderItemRepository;
@@ -56,7 +57,9 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     @Override
     public void deleteOrderItemById(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.ORDER_ID,id);
-        namedParameterJdbcTemplate.update(DELETE_ORDERITEM,sqlParameterSource);
+        int rowUpdated=namedParameterJdbcTemplate.update(DELETE_ORDERITEM,sqlParameterSource);
+        if(rowUpdated == 0)
+            throw new AccountNotExistException("Order with id "+ id + " does not exist");
         log.info("OrderItem with order id {} has been deleted",id);
     }
 }

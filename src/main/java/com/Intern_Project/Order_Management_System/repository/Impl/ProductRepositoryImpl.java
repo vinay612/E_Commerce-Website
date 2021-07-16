@@ -1,5 +1,6 @@
 package com.Intern_Project.Order_Management_System.repository.Impl;
 
+import com.Intern_Project.Order_Management_System.exception.AccountNotExistException;
 import com.Intern_Project.Order_Management_System.repository.ProductRepository;
 import com.Intern_Project.Order_Management_System.util.ApplicationConstants;
 import lombok.NoArgsConstructor;
@@ -96,7 +97,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void deleteByProductId(int id) {
         SqlParameterSource sqlParameterSource=new MapSqlParameterSource().addValue(ApplicationConstants.PRODUCT_PRODUCTID,id);
-        this.namedParameterJdbcTemplate.update(DELETE_PRODUCT,sqlParameterSource);
+        int rowUpdated=this.namedParameterJdbcTemplate.update(DELETE_PRODUCT,sqlParameterSource);
+        if(rowUpdated == 0)
+            throw new AccountNotExistException("Cart with id "+ id + " does not exist");
         log.info("Product with product id {} has been deleted ",id);
     }
 }

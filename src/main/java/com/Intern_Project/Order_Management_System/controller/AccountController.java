@@ -29,7 +29,7 @@ public class AccountController {
     private static final String URL_ID="{id}";
 
     @PostMapping(value=URL_REGISTER)
-    ResponseEntity<ResponseJson> addAccount(@Valid @RequestBody Account account){
+    ResponseEntity<ResponseJson> registerAccount(@Valid @RequestBody Account account){
         accountService.createAccount(account);
         return new ResponseEntity<>(new ResponseJson("New Account has been Successfully Created"),HttpStatus.CREATED);
     }
@@ -44,20 +44,19 @@ public class AccountController {
     }
 
     @GetMapping(value=URL_ID)
-    Account getAccountById(@PathVariable(value="id") Integer id) {
+    Account getAccountByAccountId(@PathVariable(value="id") Integer id) {
         return accountService.findById(id);
     }
 
     @PutMapping()
-    ResponseEntity<ResponseJson> updateAccountById(@Valid @RequestBody Account account) throws AccountNotExistException {
+    ResponseEntity<ResponseJson> updateAccountDetails(@Valid @RequestBody Account account) throws AccountNotExistException {
              accountService.updateAccount(account);
              return new ResponseEntity<>(new ResponseJson("Account details with Account Id "+account.getAccountId()+"  has been updated"),HttpStatus.OK);
     }
 
     @DeleteMapping(value = URL_ID)
-    ResponseEntity<ResponseJson> deleteAccountById(@PathVariable Integer id){
-
-            accountService.deleteAccount(id);
+    ResponseEntity<ResponseJson> deleteAccountByAccountId(@PathVariable Integer id){
+        accountService.deleteAccount(id);
         return new ResponseEntity<>(new ResponseJson("Account  with Account Id "+id+"  has been deleted"),HttpStatus.OK);
     }
 }
